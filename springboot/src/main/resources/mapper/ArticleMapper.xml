@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mocha.springboot.mapper.ArticleMapper">
+    <select id="selectAll" resultType="com.mocha.springboot.entity.Article">
+        select * from article
+        <where>
+            <if test="title !=null"> and name like concat('%',#{title},'%')</if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <insert id="insert" parameterType="com.mocha.springboot.entity.Article">
+        insert into article (title,img,content,time,description)
+        value (#{title},#{img},#{content},#{time},#{description} )
+    </insert>
+
+    <update id="updateById" parameterType="com.mocha.springboot.entity.Article">
+        update article set title = #{title},img = #{img},content = #{content},time = #{time},description= #{description}
+        where id = #{id}
+    </update>
+
+</mapper>

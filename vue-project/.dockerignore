@@ -1,0 +1,23 @@
+# IDE config
+.idea
+.vscode
+
+# Dependency cache
+node_modules
+
+# Build output
+dist
+
+# Git
+.git
+.gitignore
+
+# OS/Editor junk
+.DS_Store
+Thumbs.db
+
+# Docs
+README.md
+
+# Dockerfile itself (optional)
+Dockerfile

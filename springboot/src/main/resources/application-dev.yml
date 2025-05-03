@@ -1,0 +1,22 @@
+#本地开发环境
+server:
+  port: 8080
+
+# 数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/${DB_NAME}
+
+# 配置mybatis实体和xml映射
+mybatis:
+  ## 映射xml
+  ##在classpath（recources）路径下，有个mapper包，里面有xml文件
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 配置日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启下划线to驼峰转换,数据库字段使用下划线命名
+    map-underscore-to-camel-case: true

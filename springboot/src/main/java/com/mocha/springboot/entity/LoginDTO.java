@@ -1,6 +1,6 @@
 package com.mocha.springboot.entity;
 
-public class Account {
+public class LoginDTO {
     private Integer id;
     private String username;
     private String password;

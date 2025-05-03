@@ -1,6 +1,6 @@
 package com.mocha.springboot.entity;
 
-public class Admin extends Account {
+public class Admin extends LoginDTO {
     private Integer id;
     private String username;
     private String password;

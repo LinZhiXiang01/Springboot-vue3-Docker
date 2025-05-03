@@ -4,8 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mocha.springboot.entity.Admin;
-import com.mocha.springboot.entity.Account;
-import com.mocha.springboot.entity.Employee;
+import com.mocha.springboot.entity.LoginDTO;
 import com.mocha.springboot.exception.CustomException;
 import com.mocha.springboot.mapper.AdminMapper;
 import jakarta.annotation.Resource;
@@ -74,7 +73,7 @@ public class AdminService {
     }
 
     //员工登录
-    public Admin login(Account account) {
+    public Admin login(LoginDTO account) {
         String username = account.getUsername();
         String password = account.getPassword();
 
@@ -97,7 +96,7 @@ public class AdminService {
         return dbAdmin;
     }
 
-    public void updatePassword(Account updatePasswordRequest) {
+    public void updatePassword(LoginDTO updatePasswordRequest) {
         Integer id = updatePasswordRequest.getId();
         Admin admin = this.selectById(id);
         if(!admin.getPassword().equals(updatePasswordRequest.getPassword())){ //原密码错误，报错

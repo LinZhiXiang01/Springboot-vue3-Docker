@@ -137,7 +137,7 @@ loadData()
     <div class = "card" style="margin-bottom: 5px">
       <el-input style="width: 240px; margin-right:20px" v-model="data.name" placeholder="请输入名称查询" prefix-icon="Search"></el-input>
       <el-button type="primary" @click="loadData">查询</el-button>
-      <el-button type="warning"@click="resetData">重置</el-button>
+      <el-button type="warning" @click="resetData">重置</el-button>
     </div>
     <div class = "card" style="margin-bottom: 5px">
       <el-button type="primary" @click = "handleAdd">新增</el-button>

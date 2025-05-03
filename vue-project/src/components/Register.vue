@@ -1,5 +1,4 @@
 <script setup>
-  import router from "@/router/index.js"
   import {reactive, ref} from "vue";
   import request from "@/utils/request.js"
   import {ElMessage, ElMessageBox} from "element-plus";

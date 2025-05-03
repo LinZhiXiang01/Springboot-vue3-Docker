@@ -2,7 +2,7 @@ package com.mocha.springboot.controller;
 
 
 import cn.hutool.core.io.FileUtil;
-import com.mocha.springboot.common.Result;
+import com.mocha.springboot.common.ResultCode;
 import com.mocha.springboot.exception.CustomException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,7 @@ public class FileController {
 
     private static final String storePath = System.getProperty("user.dir")+"/files/";
     @PostMapping("/upload")
-    public Result upload(MultipartFile file) {
+    public ResultCode upload(MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         if(!FileUtil.isDirectory(storePath)){
             FileUtil.mkdir(storePath);
@@ -41,7 +39,7 @@ public class FileController {
         }
 
         String url = "http://localhost:9090/files/download/" + fileName;
-        return Result.success(url);
+        return ResultCode.success(url);
     }
 
 

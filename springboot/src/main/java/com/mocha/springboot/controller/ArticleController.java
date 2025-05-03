@@ -1,7 +1,7 @@
 package com.mocha.springboot.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.mocha.springboot.common.Result;
+import com.mocha.springboot.common.ResultCode;
 import com.mocha.springboot.entity.Article;
 import com.mocha.springboot.service.ArticleService;
 import jakarta.annotation.Resource;
@@ -16,41 +16,41 @@ public class ArticleController {
     @Resource private ArticleService articleService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody Article article){
+    public ResultCode add(@RequestBody Article article){
         articleService.add(article);
-        return Result.success();
+        return ResultCode.success();
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public Result delete(@PathVariable Integer id){
+    public ResultCode delete(@PathVariable Integer id){
         articleService.deleteById(id);
-        return Result.success();
+        return ResultCode.success();
     }
 
     @DeleteMapping("/deleteBatch")
-    public Result deleteBatch(@RequestBody List<Integer> ids){
+    public ResultCode deleteBatch(@RequestBody List<Integer> ids){
         articleService.deleteBatch(ids);
-        return Result.success();
+        return ResultCode.success();
     }
     @PutMapping("/update")
-    public Result update(@RequestBody Article article){
+    public ResultCode update(@RequestBody Article article){
         articleService.update(article);
-        return Result.success();
+        return ResultCode.success();
     }
 
 
     @GetMapping("/selectAll")
-    public Result selectAll(@RequestBody Article article){
+    public ResultCode selectAll(@RequestBody Article article){
         List<Article> articles = articleService.selectAll(article);
-        return Result.success(articles);
+        return ResultCode.success(articles);
     }
 
     @GetMapping("/selectPage")
-    public Result selectPage(Article article,
-                             @RequestParam (defaultValue = "1") Integer pageNum,
-                             @RequestParam (defaultValue = "5") Integer pageSize){
+    public ResultCode selectPage(Article article,
+                                 @RequestParam (defaultValue = "1") Integer pageNum,
+                                 @RequestParam (defaultValue = "5") Integer pageSize){
         PageInfo<Article> articlePageInfo = articleService.selectPage(article,pageNum, pageSize);
-        return Result.success(articlePageInfo);
+        return ResultCode.success(articlePageInfo);
     }
 
 }

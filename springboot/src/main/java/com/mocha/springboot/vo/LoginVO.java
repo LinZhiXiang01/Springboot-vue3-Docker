@@ -6,8 +6,10 @@ public class LoginVO {
     private Integer id;
     private String username;
     private String role;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private EmployeeProfile profile; // 如果你希望带上员工的完整资料，可嵌套
+
 
     public Integer getId() {
         return id;
@@ -33,12 +35,12 @@ public class LoginVO {
         this.role = role;
     }
 
-    public String getToken() {
-        return token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public EmployeeProfile getProfile() {
@@ -47,5 +49,13 @@ public class LoginVO {
 
     public void setProfile(EmployeeProfile profile) {
         this.profile = profile;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class jwtTest{
+public class JwtTest {
 
 
     @Test

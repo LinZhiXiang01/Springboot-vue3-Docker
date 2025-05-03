@@ -11,7 +11,7 @@ import com.mocha.springboot.mapper.EmployeeAuthMapper;
 import com.mocha.springboot.mapper.EmployeeProfileMapper;
 import com.mocha.springboot.vo.LoginVO;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import utils.JwtUtils;
@@ -20,16 +20,19 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service//创建 Service 并且标注为 Springboot 里面的一个 bean
 public class EmployeeService {
 
     @Resource
     private EmployeeAuthMapper employeeAuthMapper;
-    @Autowired
+    @Resource
     private BCryptPasswordEncoder  passwordEncoder;
-    @Autowired
+    @Resource
     private EmployeeProfileMapper employeeProfileMapper;
+    @Resource
+    private RedisTokenService redisTokenService;
 
     //增
     public void add(EmployeeAuth employeeAuth) {
@@ -92,7 +95,7 @@ public class EmployeeService {
 //    }
 
     //员工登录
-    public LoginVO login(LoginDTO dto) {
+    public LoginVO login(LoginDTO dto, HttpServletRequest request) {
         String username = dto.getUsername();
         String password = dto.getPassword();
         EmployeeAuth dbEmployeeAuth = employeeAuthMapper.selectByUsername(username);
@@ -107,16 +110,28 @@ public class EmployeeService {
             throw new CustomException("用户名或密码错误",500);
         }
 
-        LoginVO vo = new LoginVO();
+        Integer authId = dbEmployeeAuth.getId();
 
         //生成JWT令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", dbEmployeeAuth.getId());
+        claims.put("id", authId);
         claims.put("username", dbEmployeeAuth.getUsername());
-        String jwt = JwtUtils.generateToken(claims);
+        String accessJWT = JwtUtils.generateAccessToken(claims);
+        String refreshJWT = JwtUtils.generateRefreshToken(claims);
 
-        vo.setToken(jwt);
-        vo.setProfile(employeeProfileMapper.selectByAuthId(dbEmployeeAuth.getId()));
+        // 解析 deviceInfo（从 UA + IP 模拟）
+        String ip = request.getRemoteAddr();
+        String ua = request.getHeader("User-Agent");
+        String deviceInfo = UUID.nameUUIDFromBytes((ip + ua).getBytes()).toString();
+
+        //7天保存refreshToken
+        redisTokenService.saveRefreshToken(authId,refreshJWT,deviceInfo,7 * 24 * 60 * 60);
+
+        //返回前端 employeeProfile以及令牌
+        LoginVO vo = new LoginVO();
+        vo.setAccessToken(accessJWT);
+        vo.setRefreshToken(refreshJWT);
+        vo.setProfile(employeeProfileMapper.selectByAuthId(authId));
         return vo;
     }
 

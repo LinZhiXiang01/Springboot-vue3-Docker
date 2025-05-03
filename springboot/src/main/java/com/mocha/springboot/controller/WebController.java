@@ -10,6 +10,7 @@ import com.mocha.springboot.service.AdminService;
 import com.mocha.springboot.service.EmployeeService;
 import com.mocha.springboot.vo.LoginVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.regex.Pattern;
@@ -28,14 +29,14 @@ public class WebController {
 
     //管理员 或者 员工 登录
     @PostMapping("/login")
-    public ResultCode login(@RequestBody LoginDTO dto){
+    public ResultCode login(@RequestBody LoginDTO dto, HttpServletRequest request){
 
         LoginVO result = new LoginVO();
         if("ADMIN".equals(dto.getRole())){
 //            result =adminService.login(dto);
 
         }else if("EMP".equals(dto.getRole())){
-            result = employeeService.login(dto);
+            result = employeeService.login(dto,request);
         }else{
             throw new CustomException("请输入role",500);
         }

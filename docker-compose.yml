@@ -13,11 +13,24 @@ services:
     networks:
       - app-net
 
+  redis:
+    image:  redis:latest
+    container_name: redis
+    restart: always
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app-net
+
   backend:
     build: ./springboot
     container_name: springboot
     ports:
       - "8080:8080"
+    env_file:
+      - .env  # 可以省略，Compose 默认读取当前目录的 .env
     depends_on:
       - mysql
     environment:
@@ -50,3 +63,5 @@ networks:
 volumes:
   mysql-data:  # 定义mysql-data卷
     external: true  # 使用外部卷，而不是 Compose 自动创建的卷
+  redis-data:
+    external: false

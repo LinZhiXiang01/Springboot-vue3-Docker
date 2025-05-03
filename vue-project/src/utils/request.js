@@ -10,6 +10,11 @@ const request = axios.create({
 
 // request 拦截器
 // 可以自请求发送前对请求做一些处理
+/**TODO:前端在发送请求前：
+// 检查本地的 access_token 是否即将过期（比如小于 1 分钟）
+// ✅ 如果还没过期：直接发请求
+// ❌ 如果即将或已经过期：先调用 /token/refresh 获取新的 token，再继续
+**/
 request.interceptors.request.use(config => {
 
     try {

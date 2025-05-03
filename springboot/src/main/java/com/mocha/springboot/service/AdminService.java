@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mocha.springboot.entity.Admin;
-import com.mocha.springboot.entity.LoginDTO;
+import com.mocha.springboot.dto.LoginDTO;
 import com.mocha.springboot.exception.CustomException;
 import com.mocha.springboot.mapper.AdminMapper;
 import jakarta.annotation.Resource;
@@ -72,37 +72,37 @@ public class AdminService {
         return PageInfo.of(list);
     }
 
-    //员工登录
-    public Admin login(LoginDTO account) {
-        String username = account.getUsername();
-        String password = account.getPassword();
+//    //员工登录
+//    public Admin login(LoginDTO account) {
+//        String username = account.getUsername();
+//        String password = account.getPassword();
+//
+//        Admin dbAdmin = adminMapper.selectByUsername(username);
+//        if(dbAdmin == null){
+//            throw new CustomException("用户名不存在",500);
+//        }
+//        if(!dbAdmin.getPassword().equals(password)){
+//            throw new CustomException("用户名或密码错误",500);
+//        }
+//
+//        //生成JWT令牌
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("id", dbAdmin.getId());
+//        claims.put("username", dbAdmin.getUsername());
+//        String jwt = JwtUtils.generateToken(claims);
+//
+//        dbAdmin.setToken(jwt);
+//
+//        return dbAdmin;
+//    }
 
-        Admin dbAdmin = adminMapper.selectByUsername(username);
-        if(dbAdmin == null){
-            throw new CustomException("用户名不存在",500);
-        }
-        if(!dbAdmin.getPassword().equals(password)){
-            throw new CustomException("用户名或密码错误",500);
-        }
-
-        //生成JWT令牌
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", dbAdmin.getId());
-        claims.put("username", dbAdmin.getUsername());
-        String jwt = JwtUtils.generateToken(claims);
-
-        dbAdmin.setToken(jwt);
-
-        return dbAdmin;
-    }
-
-    public void updatePassword(LoginDTO updatePasswordRequest) {
-        Integer id = updatePasswordRequest.getId();
-        Admin admin = this.selectById(id);
-        if(!admin.getPassword().equals(updatePasswordRequest.getPassword())){ //原密码错误，报错
-            throw new CustomException("对不起，原密码错误",500);
-        }
-        admin.setPassword(updatePasswordRequest.getNewPassword());
-        this.update(admin);
-    }
+//    public void updatePassword(LoginDTO updatePasswordRequest) {
+//        Integer id = updatePasswordRequest.getId();
+//        Admin admin = this.selectById(id);
+//        if(!admin.getPassword().equals(updatePasswordRequest.getPassword())){ //原密码错误，报错
+//            throw new CustomException("对不起，原密码错误",500);
+//        }
+//        admin.setPassword(updatePasswordRequest.getNewPassword());
+//        this.update(admin);
+//    }
 }

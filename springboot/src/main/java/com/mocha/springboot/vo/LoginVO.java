@@ -1,12 +1,13 @@
-package com.mocha.springboot.entity;
+package com.mocha.springboot.vo;
 
-public class Admin {
+import com.mocha.springboot.entity.EmployeeProfile;
+
+public class LoginVO {
     private Integer id;
     private String username;
-    private String password;
     private String role;
-    private String name;
     private String token;
+    private EmployeeProfile profile; // 如果你希望带上员工的完整资料，可嵌套
 
     public Integer getId() {
         return id;
@@ -24,14 +25,6 @@ public class Admin {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role;
     }
@@ -40,19 +33,19 @@ public class Admin {
         this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public EmployeeProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(EmployeeProfile profile) {
+        this.profile = profile;
     }
 }

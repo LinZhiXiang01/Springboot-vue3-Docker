@@ -22,4 +22,7 @@ public interface EmployeeProfileMapper {
 
     @Select("select * from employee_profile where name = #{name}")
     EmployeeProfile selectByUsername(String username);
+
+    @Select("select * from employee_profile where auth_id = #{authId}")
+    EmployeeProfile selectByAuthId(Integer id);
 }

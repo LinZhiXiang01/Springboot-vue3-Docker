@@ -9,13 +9,17 @@ import com.mocha.springboot.entity.EmployeeProfile;
 import com.mocha.springboot.exception.CustomException;
 import com.mocha.springboot.mapper.EmployeeAuthMapper;
 import com.mocha.springboot.mapper.EmployeeProfileMapper;
+import com.mocha.springboot.vo.LoginVO;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import utils.JwtUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service//创建 Service 并且标注为 Springboot 里面的一个 bean
 public class EmployeeService {
@@ -88,16 +92,22 @@ public class EmployeeService {
 //    }
 
     //员工登录
-    public EmployeeAuth login(LoginDTO dto) {
+    public LoginVO login(LoginDTO dto) {
         String username = dto.getUsername();
         String password = dto.getPassword();
         EmployeeAuth dbEmployeeAuth = employeeAuthMapper.selectByUsername(username);
+
         if(dbEmployeeAuth == null){
             throw new CustomException("用户名不存在",500);
         }
-        if(!dbEmployeeAuth.getPassword().equals(password)){
+        if(!dbEmployeeAuth.getActive()){
+            throw new CustomException("账号已被禁用",500);
+        }
+        if(!passwordEncoder.matches(password, dbEmployeeAuth.getPassword())){
             throw new CustomException("用户名或密码错误",500);
         }
+
+        LoginVO vo = new LoginVO();
 
         //生成JWT令牌
         Map<String, Object> claims = new HashMap<>();
@@ -105,14 +115,22 @@ public class EmployeeService {
         claims.put("username", dbEmployeeAuth.getUsername());
         String jwt = JwtUtils.generateToken(claims);
 
-        dbEmployeeAuth.setToken(jwt);
-        return dbEmployeeAuth;
+        vo.setToken(jwt);
+        vo.setProfile(employeeProfileMapper.selectByAuthId(dbEmployeeAuth.getId()));
+        return vo;
     }
 
     //员工注册
     public void register(RegisterDTO registerRequest) {
+
         String username = registerRequest.getUsername();
         String rawPassword = registerRequest.getPassword();
+
+        //防止非法输入
+        if (StrUtil.isBlank(username) ||StrUtil.isBlank(rawPassword)) {
+            throw new CustomException("用户名和密码不能为空", 400);
+        }
+
         String hashedPassword = passwordEncoder.encode(rawPassword);
 
         EmployeeAuth employeeAuth = new EmployeeAuth();

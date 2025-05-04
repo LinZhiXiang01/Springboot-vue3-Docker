@@ -1,5 +1,6 @@
 package com.mocha.springboot.interceptor;
 
+import com.mocha.springboot.exception.CustomException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -27,34 +28,43 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //1.获取请求路径
+        // 1. 获取请求路径 (如果后续有需要使用请求路径的场景)
         String requestURI = request.getRequestURI();
+        log.info("请求路径: {}", requestURI);
 
-        //2.判断是否包含login
+        // 2. 从请求头中获取 Authorization
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if(requestURI.contains("/login")) {
-            return true;
+        // 确保格式为 "Bearer <token>"
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new CustomException("非法 Authorization header 格式", 401);
         }
 
-        //3.获取请求头中的令牌（token）
-        String jwt = request.getHeader("Token");
-
-        //4.判断令牌是否存在，如果不存在，返回401
-        if(jwt==null || jwt.isEmpty()){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
+        // 3. 获取 access token
+        String oldAccessToken = authorizationHeader.substring(7);
+        if (oldAccessToken.isEmpty()) {
+            throw new CustomException("accessToken为空", 401);
         }
 
-        //5.解析令牌，如果解析失败，返回401
-        try{
-            jwtUtils.parseToken(jwt);
-        }catch(Exception e){
-            log.info("令牌非法");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
+        // 4. 解析 access token
+        if (!isTokenValid(oldAccessToken)) {
+            throw new CustomException("accessToken非法", 401);
         }
 
-        //6.校验通过，返回true
+        // 5. 校验通过，返回 true
         return true;
+    }
+
+    // 提取验证 token 的方法
+    private boolean isTokenValid(String token) {
+        try {
+            // 验证 token 是否有效 (具体的验证逻辑根据 jwtUtils 来)
+            jwtUtils.parseToken(token);
+            return true;
+        } catch (Exception e) {
+            // 验证失败时记录异常日志
+            log.error("Token 验证失败: {}", e.getMessage());
+            return false;
+        }
     }
 }

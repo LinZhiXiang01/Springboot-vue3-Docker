@@ -12,12 +12,7 @@ import java.util.List;
 @Mapper
 public interface EmployeeAuthMapper {
 
-    List<EmployeeAuth> selectAll(EmployeeAuth employee);
 
-    List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO);
-
-    @Select("select * from employee_auth where id = #{id}")
-    EmployeeAuth selectById(Integer id);
 
     void insert(EmployeeAuth employee);
 
@@ -30,4 +25,13 @@ public interface EmployeeAuthMapper {
     EmployeeAuth selectByUsername(String username);
 
     void updatePassword(EmployeeAuth employeeAuth);
+
+    List<EmployeeAuth> selectAll(EmployeeAuth employee);
+
+    List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO);
+
+    @Select("select * from employee_auth where id=#{id}")
+    EmployeeAuth selectById(Integer id);
+
+    EmployeeInfoVO selectProfileById(Integer id);
 }

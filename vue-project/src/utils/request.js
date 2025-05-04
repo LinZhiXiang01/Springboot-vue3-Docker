@@ -21,8 +21,8 @@ request.interceptors.request.use(config => {
         const userData = window.localStorage.getItem("xm-pro-user");
         if (userData) {
             const user = JSON.parse(userData);
-            if (user && user.token) {
-                config.headers['Token'] = user.token;
+            if (user && user.accessToken) {
+                config.headers['Authorization'] = "Bearer "+user.accessToken;
                 // request.defaults.headers.common['Token'] = user.token;
             }
         }
@@ -54,7 +54,7 @@ request.interceptors.response.use(
             ElMessage.error('系统异常，请查看后端控制台报错')
         }else if (error.response.status === 401) {
             ElMessage.error('登录异常，请重新登录')
-            location.href = '/login'
+            // location.href = '/login'
         } else {
             console.error(error.message)
         }

@@ -17,11 +17,11 @@
         values (#{authId}, #{name}, #{avatar}, #{sex}, #{no}, #{age}, #{description}, #{departmentId}, #{createdAt})
     </insert>
 
-    <update id="updateById" parameterType="com.mocha.springboot.entity.EmployeeProfile">
+    <update id="updateById" parameterType="com.mocha.springboot.dto.EmployeeProfileUpdateDTO">
         update employee_profile set name = #{name},sex = #{sex},no = #{no},age = #{age},
                                     description = #{description}, department_id = #{departmentId},
-                                    avatar = #{avatar}, created_at = #{createdAt}
-        where id = #{id}
+                                    avatar = #{avatar}
+        where auth_id = #{authId}
     </update>
 
 </mapper>

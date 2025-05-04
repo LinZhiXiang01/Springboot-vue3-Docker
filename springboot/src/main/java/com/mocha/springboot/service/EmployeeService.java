@@ -3,10 +3,7 @@ package com.mocha.springboot.service;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mocha.springboot.dto.EmployeeQueryDTO;
-import com.mocha.springboot.dto.LoginDTO;
-import com.mocha.springboot.dto.RegisterDTO;
-import com.mocha.springboot.dto.UpdatePasswordDTO;
+import com.mocha.springboot.dto.*;
 import com.mocha.springboot.entity.EmployeeAuth;
 import com.mocha.springboot.entity.EmployeeProfile;
 import com.mocha.springboot.exception.CustomException;
@@ -21,9 +18,7 @@ import org.springframework.stereotype.Service;
 import com.mocha.springboot.utils.JwtUtils;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service//创建 Service 并且标注为 Springboot 里面的一个 bean
@@ -72,7 +67,7 @@ public class EmployeeService {
         if (StrUtil.isBlank(employeeProfile.getName())){ //名字nickName为空，设置默认名字
             employeeProfile.setName(username);
         }
-        employeeProfile.setCreatedAt(LocalDateTime.now());
+        employeeProfile.setProfileCreatedAt(LocalDateTime.now());
         employeeProfile.setAuthId(employeeAuth.getId());
         employeeProfileMapper.insert(employeeProfile);
     }
@@ -90,9 +85,9 @@ public class EmployeeService {
     }
 
     //改
-//    public void update(Employee employee) {
-//        employeeMapper.updateById(employee);
-//    }
+    public void updateProfile(EmployeeProfileUpdateDTO dto) {
+        employeeProfileMapper.updateById(dto);
+    }
 
     public List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO) {
         return employeeAuthMapper.selectAllWithProfile(employeeQueryDTO);
@@ -100,6 +95,10 @@ public class EmployeeService {
 
     public EmployeeAuth selectById(Integer id) {
         return employeeAuthMapper.selectById(id);
+    }
+
+    public EmployeeInfoVO selectProfileById(Integer id) {
+        return employeeAuthMapper.selectProfileById(id);
     }
 
 
@@ -131,13 +130,10 @@ public class EmployeeService {
         }
 
         Integer authId = dbEmployeeAuth.getId();
-
+        String authUsername = dbEmployeeAuth.getUsername();
         //生成JWT令牌
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", authId);
-        claims.put("username", dbEmployeeAuth.getUsername());
-        String accessJWT = jwtUtils.generateAccessToken(claims);
-        String refreshJWT = jwtUtils.generateRefreshToken(claims);
+        String accessJWT = jwtUtils.generateAccessToken(authId,authUsername);
+        String refreshJWT = jwtUtils.generateRefreshToken(authId,authUsername);
 
         // 解析 deviceInfo（从 UA + IP 模拟）
         String ip = request.getRemoteAddr();
@@ -145,11 +141,13 @@ public class EmployeeService {
         String deviceInfo = UUID.nameUUIDFromBytes((ip + ua).getBytes()).toString();
 
         //7天保存refreshToken
-        redisTokenService.saveRefreshToken(authId,refreshJWT,deviceInfo,7 * 24 * 60 * 60);
+        redisTokenService.saveRefreshToken(authId,refreshJWT,deviceInfo);
 
         //返回前端 employeeProfile以及令牌
         LoginVO vo = new LoginVO();
         vo.setAccessToken(accessJWT);
+        vo.setRefreshToken(refreshJWT);
+        vo.setRole("EMP");
         vo.setProfile(employeeProfileMapper.selectByAuthId(authId));
         return vo;
     }
@@ -176,7 +174,7 @@ public class EmployeeService {
 
     public void updatePassword(UpdatePasswordDTO dto) {
 
-        Integer id = dto.getAuth_id();
+        Integer id = dto.getAuthId();
         EmployeeAuth employeeAuth = this.selectById(id);
         String hashedPassword = dto.getOldPassword();
 

@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -21,7 +22,11 @@ public class JwtUtils {
     /**
      * 生成短期JWT令牌
      */
-    public String generateAccessToken(Map<String,Object> claims){
+    public String generateAccessToken(Integer id,String username){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
+        claims.put("username",username);
+
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256,jwtProperties.getSecret())
                 .addClaims(claims)//添加自定义信息
@@ -32,7 +37,12 @@ public class JwtUtils {
     /**
      * 生成长期JWT令牌
      */
-    public String generateRefreshToken(Map<String,Object> claims){
+    public String generateRefreshToken(Integer id,String username){
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
+        claims.put("username",username);
+
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256,jwtProperties.getSecret())
                 .addClaims(claims)//添加自定义信息

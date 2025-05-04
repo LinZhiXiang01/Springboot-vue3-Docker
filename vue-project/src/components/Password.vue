@@ -18,7 +18,7 @@ const data = reactive({
   user:JSON.parse(localStorage.getItem('xm-pro-user')),
   form:{},
   rule: {
-    password: [
+    oldPassword: [
       { required: true, message: '请输入原密码', trigger: 'blur' },
     ],
     newPassword: [
@@ -27,13 +27,13 @@ const data = reactive({
     confirmPassword:[
       { required: true,message:'请再次确认新密码',validator: validatePass, trigger: 'blur' }
     ]
-  }
+  },
 
 })
 
 
 const updatePassword =()=>{
-  data.form.id = data.user.id
+  data.form.authId = data.user.profile.authId
   data.form.role = data.user.role
   formRef.value.validate(valid => {
     if (valid){
@@ -58,8 +58,8 @@ const updatePassword =()=>{
 
   <div class = "card" style="width: 500px;">
     <el-form ref = "formRef" :rules="data.rule" :model= "data.form" >
-      <el-form-item label="原密码" prop="password">
-        <el-input show-password  v-model="data.form.password" placeholder="请输入原密码"></el-input>
+      <el-form-item label="原密码" prop="oldPassword">
+        <el-input show-password  v-model="data.form.oldPassword" placeholder="请输入原密码"></el-input>
       </el-form-item>
 
       <el-form-item label="新密码" prop="newPassword">

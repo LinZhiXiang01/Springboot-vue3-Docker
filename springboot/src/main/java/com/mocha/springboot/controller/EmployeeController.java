@@ -2,6 +2,7 @@ package com.mocha.springboot.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mocha.springboot.common.ResultCode;
+import com.mocha.springboot.dto.EmployeeProfileUpdateDTO;
 import com.mocha.springboot.dto.EmployeeQueryDTO;
 import com.mocha.springboot.entity.EmployeeAuth;
 import com.mocha.springboot.service.EmployeeService;
@@ -30,11 +31,11 @@ public class EmployeeController {
         return ResultCode.success();
     }
 
-//    @PutMapping("/update")
-//    public ResultCode update(@RequestBody Employee employee){
-//        employeeService.update(employee);
-//        return ResultCode.success();
-//    }
+    @PutMapping("/update")
+    public ResultCode updateProfile(@RequestBody EmployeeProfileUpdateDTO dto){
+        employeeService.updateProfile(dto);
+        return ResultCode.success();
+    }
 
     @DeleteMapping("/deleteById/{id}")
     public ResultCode delete(@PathVariable Integer id){
@@ -56,11 +57,11 @@ public class EmployeeController {
         return ResultCode.success(list);
     }
 
-//    @GetMapping("/selectById/{id}")
-//    public ResultCode selectById(@PathVariable Integer id){
-//        EmployeeAuth employee = employeeService.selectById(id);
-//        return ResultCode.success(employee);
-//    }
+    @GetMapping("/selectProfileById/{id}")
+    public ResultCode selectById(@PathVariable Integer id){
+        EmployeeInfoVO employeeInfoVO = employeeService.selectProfileById(id);
+        return ResultCode.success(employeeInfoVO);
+    }
 
     /*
     * 分页查询数据

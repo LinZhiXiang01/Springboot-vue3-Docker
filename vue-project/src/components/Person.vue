@@ -44,11 +44,12 @@ const updatePersonalInfo = () => {
           }
         })
       }else{ // 员工
+        data.form.authId = data.user.profile.authId
         request.put('employee/update', data.form).then(res => {
           if (res.code === 200) {
             ElMessage.success("更新成功")
             //更新缓存数据
-            localStorage.setItem("xm-pro-user", JSON.stringify(data.form))
+            localStorage.profile.setItem("profile", JSON.stringify(data.form))
             // 触发父级从缓存里取的最新个人信息
             emit('updatePersonalInfo')
           } else {
@@ -69,8 +70,9 @@ const handleAvatarSuccess = (res)=>{
 
 
 if(data.user.role ==="EMP"){
-  request.get('employee/selectById'+"/"+data.user.id).then(res =>{
+  request.get('employee/selectProfileById'+"/"+data.user.profile.authId).then(res =>{
     data.form = res.data
+    data.form.role = "EMP"
   })
 }else {
   data.form = data.user
@@ -86,7 +88,7 @@ if(data.user.role ==="EMP"){
     <el-form-item label="头像">
       <el-upload
           class="avatar-uploader"
-          action="http://localhost:9090/files/upload"
+          action="http://localhost:8080/files/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
       >

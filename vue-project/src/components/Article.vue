@@ -26,7 +26,7 @@ const data = reactive({
 })
 
 /* wangEditor5 初始化开始 */
-const baseUrl = 'http://localhost:9090'
+const baseUrl = 'http://localhost:8080'
 const editorRef = shallowRef()  // 编辑器实例，必须用 shallowRef
 const mode = 'default'
 const editorConfig = { MENU_CONF: {} }
@@ -230,7 +230,7 @@ loadData()
       </el-form-item>
       <el-form-item label="封面" prop="img">
         <el-upload
-            action="http://localhost:9090/files/upload"
+            action="http://localhost:8080/files/upload"
             :on-success="handleAvatarSuccess"
             list-type="picture"
         >

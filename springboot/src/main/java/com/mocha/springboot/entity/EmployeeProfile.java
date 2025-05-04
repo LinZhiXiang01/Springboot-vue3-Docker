@@ -12,7 +12,7 @@ public class EmployeeProfile {
     private String description;
     private String departmentId;
     private String avatar;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime profileCreatedAt;
 
     public Integer getAge() {
         return age;
@@ -86,11 +86,11 @@ public class EmployeeProfile {
         this.avatar = avatar;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getProfileCreatedAt() {
+        return profileCreatedAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setProfileCreatedAt(LocalDateTime profileCreatedAt) {
+        this.profileCreatedAt = profileCreatedAt;
     }
 }

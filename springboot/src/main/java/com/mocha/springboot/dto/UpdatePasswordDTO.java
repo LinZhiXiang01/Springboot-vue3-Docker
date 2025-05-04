@@ -1,7 +1,7 @@
 package com.mocha.springboot.dto;
 
 public class UpdatePasswordDTO {
-    private Integer auth_id;
+    private Integer authId;
     private String oldPassword;
     private String newPassword;
     private String role;
@@ -16,12 +16,12 @@ public class UpdatePasswordDTO {
 
 
 
-    public Integer getAuth_id() {
-        return auth_id;
+    public Integer getAuthId() {
+        return authId;
     }
 
-    public void setAuth_id(Integer auth_id) {
-        this.auth_id = auth_id;
+    public void setAuthId(Integer authId) {
+        this.authId = authId;
     }
 
     public String getOldPassword() {

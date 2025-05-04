@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 const router = createRouter({
     history: createWebHistory(),
     routes:[
-        {path :'/' ,redirect:'/home'},
+        {path :'/' ,redirect:'/login'},
         {path:'/login',name:'login',meta:{title:'欢迎登录'},component:() => import('../components/Login.vue')},
         {path:'/register',name:'register',meta:{title:'欢迎注册'},component:() => import('../components/Register.vue')},
         {path :'/manager',component:() => import('../components/Manager.vue') ,children:[

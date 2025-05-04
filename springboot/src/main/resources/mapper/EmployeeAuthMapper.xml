@@ -4,27 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mocha.springboot.mapper.EmployeeAuthMapper">
 
-    <select id="selectAll" resultType="com.mocha.springboot.entity.EmployeeAuth">
-        select * from employeeAuth
-        <where>
-            <if test="name !=null"> and name like concat('%',#{name},'%')</if>
-        </where>
-        order by id desc
-    </select>
-
-
-    <select id="selectAllWithProfile" resultType="com.mocha.springboot.vo.EmployeeInfoVO">
-        SELECT e.id, e.username, e.role, e.is_active, e.created_at as account_created_at, e.last_login_at,
-               p.id as profile_id, p.name, p.sex, p.no, p.age, p.description, p.department_id, p.avatar, p.created_at as profile_created_at
-        FROM employee_auth e
-        LEFT JOIN employee_profile p ON e.id = p.auth_id
-        <where>
-            <if test="username !=null"> and e.username like concat('%',#{username},'%')</if>
-        </where>
-        ORDER BY e.id DESC
-
-    </select>
-
     <insert id="insert" parameterType="com.mocha.springboot.entity.EmployeeAuth" useGeneratedKeys="true" keyProperty="id">
         insert into employee_auth (username, password, role, is_active, created_at)
         values (#{username}, #{password}, #{role}, #{active}, #{createdAt})
@@ -37,8 +16,37 @@
     </update>
 
     <update id="updatePassword" parameterType="com.mocha.springboot.entity.EmployeeAuth">
-        update employee_auth set password = #{newPassword}
+        update employee_auth set password = #{password}
         where id = #{id}
     </update>
+
+    <select id="selectAll" resultType="com.mocha.springboot.entity.EmployeeAuth">
+        select * from employeeAuth
+        <where>
+            <if test="name !=null"> and name like concat('%',#{name},'%')</if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <select id="selectAllWithProfile" resultType="com.mocha.springboot.vo.EmployeeInfoVO">
+        SELECT e.id, e.username, e.role, e.is_active, e.created_at as account_created_at, e.last_login_at,
+        p.id as profile_id, p.name, p.sex, p.no, p.age, p.description, p.department_id, p.avatar, p.created_at as profile_created_at
+        FROM employee_auth e
+        LEFT JOIN employee_profile p ON e.id = p.auth_id
+        <where>
+            <if test="username !=null"> and e.username like concat('%',#{username},'%')</if>
+        </where>
+        ORDER BY e.id DESC
+
+    </select>
+
+    <select id="selectProfileById" resultType="com.mocha.springboot.vo.EmployeeInfoVO">
+        SELECT a.username,p.name, p.sex, p.no, p.age, p.description, p.department_id, p.avatar,p.created_at as profile_created_at
+        FROM employee_auth a
+        LEFT JOIN employee_profile p ON a.id = p.auth_id
+        WHERE auth_id = #{id}
+
+    </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.mocha.springboot.service;
 
+import com.mocha.springboot.config.JwtProperties;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
@@ -8,37 +9,42 @@ import java.time.Duration;
 public class RedisTokenService {
 
     private final StringRedisTemplate redisTemplate;
-    public RedisTokenService(StringRedisTemplate redisTemplate) {
+    private final JwtProperties  jwtProperties;
+    public RedisTokenService(StringRedisTemplate redisTemplate, JwtProperties jwtProperties) {
         this.redisTemplate = redisTemplate;
+        this.jwtProperties = jwtProperties;
     }
 
     /**
      * 保存 Token 和设备信息
      * @param refreshToken: 又JWT生成的刷新令牌
      * @param deviceInfo: 用户登录设备的信息
-     * @param expireSeconds: 过期时间
+     * Redis结构：
+     *      KEY: login:token:{userId}         # Redis Hash 类型
+     *      FIELDS:
+     *          {deviceInfoUUID} -> {refreshToken}
       */
-    public void saveRefreshToken(Integer userId,String refreshToken, String deviceInfo, long expireSeconds) {
-        redisTemplate.opsForValue().set(refreshToken, deviceInfo);
+    public void saveRefreshToken(Integer userId,String refreshToken, String deviceInfo) {
 
         String key = "login:token:" + userId;
+        redisTemplate.opsForHash().put(key,  deviceInfo, refreshToken);
 
-        /**
-         * key = login:token:12345
-         * fields:
-         *   token  -> xxxxxxxx（JWT 或 refreshToken）
-         *   device -> iPhone 15 / Chrome on Mac 等
-         */
-        redisTemplate.opsForHash().put(key, "refreshToken",refreshToken);
-        redisTemplate.opsForHash().put(key,"device",deviceInfo);
-        redisTemplate.expire(key, Duration.ofSeconds(expireSeconds));
+        //DONE
+        redisTemplate.expire(key, Duration.ofSeconds(jwtProperties.getRefreshTokenExpiration()));
 
     }
 
-    public String getRefreshToken(Integer userId,  String deviceInfo){
+
+    public void deleteRefreshToken(Integer userId,String deviceInfo){
         String key = "login:token:" + userId;
-        Object refreshToken = redisTemplate.opsForHash().get(key,"refreshToken");
-        return( refreshToken!= null) ? refreshToken.toString():null;
+        redisTemplate.opsForHash().delete(key,deviceInfo);
+    }
+
+
+    public String getRefreshToken(Integer userId,String deviceInfo){
+        String key = "login:token:" + userId;
+        Object refreshToken = redisTemplate.opsForHash().get(key, deviceInfo);
+        return (refreshToken != null) ? refreshToken.toString() : null;
     }
 
 }

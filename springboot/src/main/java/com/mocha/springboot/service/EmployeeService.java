@@ -1,6 +1,9 @@
 package com.mocha.springboot.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mocha.springboot.dto.EmployeeQueryDTO;
 import com.mocha.springboot.dto.LoginDTO;
 import com.mocha.springboot.dto.RegisterDTO;
 import com.mocha.springboot.dto.UpdatePasswordDTO;
@@ -9,12 +12,13 @@ import com.mocha.springboot.entity.EmployeeProfile;
 import com.mocha.springboot.exception.CustomException;
 import com.mocha.springboot.mapper.EmployeeAuthMapper;
 import com.mocha.springboot.mapper.EmployeeProfileMapper;
+import com.mocha.springboot.vo.EmployeeInfoVO;
 import com.mocha.springboot.vo.LoginVO;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utils.JwtUtils;
+import com.mocha.springboot.utils.JwtUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,14 +29,24 @@ import java.util.UUID;
 @Service//创建 Service 并且标注为 Springboot 里面的一个 bean
 public class EmployeeService {
 
-    @Resource
-    private EmployeeAuthMapper employeeAuthMapper;
-    @Resource
-    private BCryptPasswordEncoder  passwordEncoder;
-    @Resource
-    private EmployeeProfileMapper employeeProfileMapper;
-    @Resource
-    private RedisTokenService redisTokenService;
+    private final EmployeeAuthMapper employeeAuthMapper;
+    private final EmployeeProfileMapper employeeProfileMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final RedisTokenService redisTokenService;
+    private final JwtUtils jwtUtils;
+
+    @Autowired
+    public EmployeeService(EmployeeAuthMapper employeeAuthMapper,
+                           EmployeeProfileMapper employeeProfileMapper,
+                           BCryptPasswordEncoder passwordEncoder,
+                           RedisTokenService redisTokenService,
+                           JwtUtils jwtUtils){
+        this.employeeAuthMapper = employeeAuthMapper;
+        this.employeeProfileMapper = employeeProfileMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.redisTokenService = redisTokenService;
+        this.jwtUtils = jwtUtils;
+    }
 
     //增
     public void add(EmployeeAuth employeeAuth) {
@@ -75,24 +89,30 @@ public class EmployeeService {
         }
     }
 
-//    //改
+    //改
 //    public void update(Employee employee) {
 //        employeeMapper.updateById(employee);
 //    }
 
-//    public List<EmployeeAuth> selectAll(EmployeeAuth employee) {
-//        return employeeMapper.selectAll(employee);
-//    }
+    public List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO) {
+        return employeeAuthMapper.selectAllWithProfile(employeeQueryDTO);
+    }
 
     public EmployeeAuth selectById(Integer id) {
         return employeeAuthMapper.selectById(id);
     }
-//
-//    public PageInfo<EmployeeAuth> selectPage(EmployeeAuth employee, Integer pageNum, Integer pageSize){
-//        PageHelper.startPage(pageNum,pageSize);
-//        List<EmployeeAuth> list = employeeMapper.selectAll(employee);
-//        return PageInfo.of(list);
-//    }
+
+
+    /**
+     * 分页查询：
+     *  selectPage->selectAll带name查询
+     */
+    public PageInfo<EmployeeInfoVO> selectPage(EmployeeQueryDTO employeeQueryDTO,
+                                               Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<EmployeeInfoVO> list = employeeAuthMapper.selectAllWithProfile(employeeQueryDTO);
+        return PageInfo.of(list);
+    }
 
     //员工登录
     public LoginVO login(LoginDTO dto, HttpServletRequest request) {
@@ -116,8 +136,8 @@ public class EmployeeService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", authId);
         claims.put("username", dbEmployeeAuth.getUsername());
-        String accessJWT = JwtUtils.generateAccessToken(claims);
-        String refreshJWT = JwtUtils.generateRefreshToken(claims);
+        String accessJWT = jwtUtils.generateAccessToken(claims);
+        String refreshJWT = jwtUtils.generateRefreshToken(claims);
 
         // 解析 deviceInfo（从 UA + IP 模拟）
         String ip = request.getRemoteAddr();
@@ -130,7 +150,6 @@ public class EmployeeService {
         //返回前端 employeeProfile以及令牌
         LoginVO vo = new LoginVO();
         vo.setAccessToken(accessJWT);
-        vo.setRefreshToken(refreshJWT);
         vo.setProfile(employeeProfileMapper.selectByAuthId(authId));
         return vo;
     }

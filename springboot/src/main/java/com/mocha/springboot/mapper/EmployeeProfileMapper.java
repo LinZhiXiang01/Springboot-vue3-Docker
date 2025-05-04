@@ -2,11 +2,14 @@ package com.mocha.springboot.mapper;
 
 import com.mocha.springboot.entity.EmployeeProfile;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@Mapper
 public interface EmployeeProfileMapper {
+
     List<EmployeeProfile> selectAll(EmployeeProfile employee);
 
     @Select("select * from employee_profile where id = #{id}")

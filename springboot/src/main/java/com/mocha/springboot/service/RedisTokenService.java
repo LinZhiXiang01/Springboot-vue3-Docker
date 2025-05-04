@@ -2,12 +2,15 @@ package com.mocha.springboot.service;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 
 @Service
 public class RedisTokenService {
-    private StringRedisTemplate  redisTemplate;
+
+    private final StringRedisTemplate redisTemplate;
+    public RedisTokenService(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 保存 Token 和设备信息

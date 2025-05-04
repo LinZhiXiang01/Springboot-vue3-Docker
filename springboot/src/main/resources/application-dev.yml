@@ -4,6 +4,8 @@ server:
 
 jwt:
   secret: ${JWT_SECRET:?Please set the JWT_SECRET environment variable}
+  access-token-expiration: ${JWT_ACCESS_EXP:900000}     # 15分钟 = 15*60*1000
+  refresh-token-expiration: ${JWT_REFRESH_EXP:604800000} # 7天
 
 # 数据库配置
 spring:

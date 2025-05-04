@@ -4,9 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import utils.JwtUtils;
+import com.mocha.springboot.utils.JwtUtils;
 
 
 /**
@@ -15,6 +16,13 @@ import utils.JwtUtils;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
     private static final Logger log = LoggerFactory.getLogger(TokenInterceptor.class);
+
+    private final JwtUtils jwtUtils;
+
+    @Autowired
+    public TokenInterceptor(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,7 +47,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         //5.解析令牌，如果解析失败，返回401
         try{
-            JwtUtils.parseToken(jwt);
+            jwtUtils.parseToken(jwt);
         }catch(Exception e){
             log.info("令牌非法");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

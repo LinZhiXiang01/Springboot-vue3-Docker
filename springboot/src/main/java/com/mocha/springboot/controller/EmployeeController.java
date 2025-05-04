@@ -2,8 +2,10 @@ package com.mocha.springboot.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mocha.springboot.common.ResultCode;
+import com.mocha.springboot.dto.EmployeeQueryDTO;
 import com.mocha.springboot.entity.EmployeeAuth;
 import com.mocha.springboot.service.EmployeeService;
+import com.mocha.springboot.vo.EmployeeInfoVO;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +49,12 @@ public class EmployeeController {
         return ResultCode.success();
     }
 
-//    @GetMapping("/selectAll")
-//    public ResultCode selectAll(EmployeeAuth employee){
-//        List<EmployeeAuth> list = employeeService.selectAll(employee);
-//        return ResultCode.success(list);
-//    }
+    //带name查询的selectAll
+    @GetMapping("/selectAll")
+    public ResultCode selectAll(EmployeeQueryDTO employeeQueryDTO){
+        List<EmployeeInfoVO> list = employeeService.selectAllWithProfile(employeeQueryDTO);
+        return ResultCode.success(list);
+    }
 
 //    @GetMapping("/selectById/{id}")
 //    public ResultCode selectById(@PathVariable Integer id){
@@ -64,11 +67,11 @@ public class EmployeeController {
     *pageNum 当前页码
     * pageSize 每页显示条数
     */
-//   @GetMapping("/selectPage")
-//    public ResultCode selectPage(EmployeeAuth employee,
-//                                 @RequestParam (defaultValue = "1") Integer pageNum,
-//                                 @RequestParam (defaultValue = "10") Integer pageSize){
-//       PageInfo<EmployeeAuth> employeePageInfo = employeeService.selectPage(employee,pageNum, pageSize);
-//       return ResultCode.success(employeePageInfo);
-//    }
+   @GetMapping("/selectPage")
+    public ResultCode selectPage(EmployeeQueryDTO employeeQueryDTO,
+                                 @RequestParam (defaultValue = "1") Integer pageNum,
+                                 @RequestParam (defaultValue = "10") Integer pageSize){
+       PageInfo<EmployeeInfoVO> employeePageInfo = employeeService.selectPage(employeeQueryDTO,pageNum, pageSize);
+       return ResultCode.success(employeePageInfo);
+    }
 }

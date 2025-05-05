@@ -1,5 +1,7 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {getStoredUser,isTokenExpiringSoon,tryRefreshToken} from "@/utils/authToken.js";
+
 
 const request = axios.create({
     baseURL: '/api',  // 用代理重定向到后端
@@ -15,26 +17,26 @@ const request = axios.create({
 // ✅ 如果还没过期：直接发请求
 // ❌ 如果即将或已经过期：先调用 /token/refresh 获取新的 token，再继续
 **/
-request.interceptors.request.use(config => {
+request.interceptors.request.use(async config => {
 
-    try {
-        const userData = window.localStorage.getItem("xm-pro-user");
-        if (userData) {
-            const user = JSON.parse(userData);
-            if (user && user.accessToken) {
-                config.headers['Authorization'] = "Bearer "+user.accessToken;
-                // request.defaults.headers.common['Token'] = user.token;
+    const user = getStoredUser();
+    if (user && user.accessToken) {
+
+        let token = user.accessToken;
+
+        if (isTokenExpiringSoon(token)) {
+            const newToken = await tryRefreshToken();
+            if (newToken) {
+                token = newToken;
             }
         }
-    } catch (error) {
-        console.error("Failed to parse user data from localStorage:", error);
+
+        config.headers['Authorization'] = "Bearer " + token;
     }
 
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     return config
-}, error => {
-    return Promise.reject(error)
-});
+}, error => Promise.reject(error));
 
 // response 拦截器
 // 可以在接口响应后统一处理结果

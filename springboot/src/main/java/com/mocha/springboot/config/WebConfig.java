@@ -22,6 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
         //链式编程，addPathPattens()表示拦截所有请求
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/files/**","/login","/register","/refreshToken");
+                .excludePathPatterns("/files/**","/login","/register");
     }
 }

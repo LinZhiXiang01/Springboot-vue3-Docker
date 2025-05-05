@@ -25,13 +25,6 @@ public class RefreshTokenService {
         String ua = request.getHeader("User-Agent");
         String deviceInfo = UUID.nameUUIDFromBytes((ip + ua).getBytes()).toString();
 
-        //1.校验redis中是否存在refreshToken,是否已经过期
-        String redisRefreshToken = redisTokenService.getRefreshToken(userId,deviceInfo);
-
-        if("".equals(redisRefreshToken)|| redisRefreshToken==null){
-            throw new CustomException("refreshToken已过期",401);
-        }
-
         //2. 从请求头中获取Authorization
         String authorizationHeader = request.getHeader("Authorization");
 
@@ -52,22 +45,28 @@ public class RefreshTokenService {
             throw new CustomException("refreshToken非法",401);
         }
 
-        //4.新旧TOKEN匹配校验
+        //4.校验redis中是否存在refreshToken,是否已经过期
+        String redisRefreshToken = redisTokenService.getRefreshToken(userId,deviceInfo);
+        if("".equals(redisRefreshToken)|| redisRefreshToken==null){
+            throw new CustomException("refreshToken已过期",401);
+        }
+
+        //5.新旧TOKEN匹配校验
         if(!redisRefreshToken.equals(oldRefreshToken)){
             throw new CustomException("refreshToken非法",401);
         }
 
-        // 删除旧的 device 对应的 refreshToken
+        //校验通过后：删除旧的 device 对应的 refreshToken
         redisTokenService.deleteRefreshToken(userId, deviceInfo);
 
-        //5.生成新的accessToken和refreshToken
+        //6.生成新的accessToken和refreshToken
         String refreshToken = jwtUtils.generateRefreshToken(userId,deviceInfo);
         String accessToken = jwtUtils.generateAccessToken(userId,deviceInfo);
 
-        //6.更新保存到redis中
+        //7.更新保存到redis中
         redisTokenService.saveRefreshToken(userId,refreshToken,deviceInfo);
 
-        //7.返回新的accessToken和refreshToken
+        //8.返回新的accessToken和refreshToken
         JwtVO jwtVO = new JwtVO();
         jwtVO.setAccessToken(accessToken);
         jwtVO.setRefreshToken(refreshToken);

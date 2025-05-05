@@ -126,7 +126,7 @@ const delBatch=()=>{
 const handleSelectionChange = (rows)=>{
 //从行数组里面，取出所有id，形成新的数组
   data.ids = rows.map(row=>row.id)
-  console.log(data.ids)
+  // console.log(data.ids)
 }
 
 const handleAvatarSuccess = (res)=>{
@@ -143,7 +143,7 @@ loadData()
     <div class = "card" style="margin-bottom: 5px">
       <el-input style="width: 240px; margin-right:20px" v-model="data.name" placeholder="请输入名称查询" prefix-icon="Search"></el-input>
       <el-button type="primary" @click="loadData">查询</el-button>
-      <el-button type="warning"@click="resetData">重置</el-button>
+      <el-button type="warning" @click="resetData">重置</el-button>
     </div>
     <div class = "card" style="margin-bottom: 5px">
       <el-button type="primary" @click = "handleAdd">新增</el-button>

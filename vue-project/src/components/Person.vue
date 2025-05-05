@@ -3,6 +3,7 @@
 import {reactive,ref} from "vue";
 import request from "@/utils/request.js"
 import {ElMessage} from "element-plus";
+import {Plus} from "@element-plus/icons-vue";
 
 
 const formRef = ref()
@@ -64,7 +65,7 @@ const updatePersonalInfo = () => {
 const emit = defineEmits(['updatePersonalInfo'])
 
 const handleAvatarSuccess = (res)=>{
-  console.log(res)
+  // console.log(res)
   data.form.avatar = res.data
 }
 
@@ -93,7 +94,7 @@ if(data.user.role ==="EMP"){
           :on-success="handleAvatarSuccess"
       >
         <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar"  alt=""/>
-        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        <el-icon v-else class="avatar-uploader-icon"><Plus/></el-icon>
       </el-upload>
     </el-form-item>
     <el-form-item label="账号" prop="username">

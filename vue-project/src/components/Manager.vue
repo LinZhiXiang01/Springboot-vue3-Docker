@@ -20,6 +20,7 @@ const updateUser = () =>{
   data.form = JSON.parse(localStorage.getItem("xm-pro-user"))
 }
 
+console.log(data.form)
 </script>
 
 <template>
@@ -32,9 +33,9 @@ const updateUser = () =>{
       </span>
     </div>
     <div style="flex:1"></div>
-    <div style="width: fit-content ;display: flex ;align-items: center;margin: 10px">
-        <img :src="data.form.avatar" alt="" style="width: 40px; height: 40px; border-radius: 50%">
-        <span style="margin-left: 5px; color: white">{{ data.user.name }}</span>
+    <div style="width: fit-content ;display: flex ;align-items: center;margin: 10px; margin-right: 40px">
+        <img :src="data.user.profile.avatar" alt="" style="width: 40px; height: 40px; border-radius: 50%">
+        <span style="margin-left: 5px; color: white">{{ data.user.profile.name }}</span>
     </div>
   </div>
 

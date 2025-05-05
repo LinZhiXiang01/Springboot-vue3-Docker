@@ -8,7 +8,7 @@ public class LoginVO {
     private String role;
     private String accessToken;
     private String refreshToken;
-    private EmployeeProfile profile; // 如果你希望带上员工的完整资料，可嵌套
+    private EmployeeProfile profile; // 如果希望带上员工的完整资料，可嵌套
 
     public String getRefreshToken() {
         return refreshToken;

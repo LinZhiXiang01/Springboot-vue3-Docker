@@ -1,8 +1,13 @@
 FROM node:lts-alpine AS build
 
 WORKDIR /build
-COPY package.json .
-RUN npm install
+
+# 先拷贝 package.json 和 package-lock.json（如果有），这样可以利用缓存
+COPY package*.json ./
+
+# 设置淘宝 npm 镜像，加快下载速度
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm install
 
 COPY . .
 RUN npm run build

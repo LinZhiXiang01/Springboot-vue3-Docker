@@ -2,3 +2,6 @@
 target/
 .idea
 *.iml
+.gitignore
+.gitattributes
+test

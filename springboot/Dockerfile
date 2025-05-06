@@ -6,7 +6,7 @@ WORKDIR /build
 RUN mkdir -p /root/.m2
 
 # 复制 Maven 配置（相对路径根据你 docker build 的上下文定）
-COPY ../maven/settings.xml /root/.m2/settings.xml
+COPY settings.xml /root/.m2/settings.xml
 
 # 先缓存依赖
 COPY pom.xml .

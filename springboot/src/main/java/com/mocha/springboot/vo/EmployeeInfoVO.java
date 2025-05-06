@@ -16,8 +16,7 @@ public class EmployeeInfoVO {
     private String description;
     private Integer departmentId;
     private String avatar;
-    private LocalDateTime accountCreatedAt;//账号创建时间：EmployeeAuth.created_at
-    private LocalDateTime profileCreatedAt;
+    private LocalDateTime createdAt;//账号创建时间：EmployeeAuth.created_at
 
     public Integer getProfileId() {
         return profileId;
@@ -27,20 +26,12 @@ public class EmployeeInfoVO {
         this.profileId = profileId;
     }
 
-    public LocalDateTime getAccountCreatedAt() {
-        return accountCreatedAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setAccountCreatedAt(LocalDateTime accountCreatedAt) {
-        this.accountCreatedAt = accountCreatedAt;
-    }
-
-    public LocalDateTime getProfileCreatedAt() {
-        return profileCreatedAt;
-    }
-
-    public void setProfileCreatedAt(LocalDateTime profileCreatedAt) {
-        this.profileCreatedAt = profileCreatedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Integer getId() {

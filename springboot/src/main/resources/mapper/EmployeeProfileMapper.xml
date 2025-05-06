@@ -13,8 +13,8 @@
 
 
     <insert id="insert" parameterType="com.mocha.springboot.entity.EmployeeProfile" useGeneratedKeys="true" keyProperty="id">
-        insert into employee_profile (auth_id, name, avatar, sex, no, age, description, department_id, created_at)
-        values (#{authId}, #{name}, #{avatar}, #{sex}, #{no}, #{age}, #{description}, #{departmentId}, #{createdAt})
+        insert into employee_profile (auth_id, name, avatar, sex, no, age, description, department_id)
+        values (#{authId}, #{name}, #{avatar}, #{sex}, #{no}, #{age}, #{description}, #{departmentId})
     </insert>
 
     <update id="updateById" parameterType="com.mocha.springboot.dto.EmployeeProfileUpdateDTO">
@@ -22,6 +22,8 @@
                                     description = #{description}, department_id = #{departmentId},
                                     avatar = #{avatar}
         where auth_id = #{authId}
+#         where id = #{id}
+
     </update>
 
 </mapper>

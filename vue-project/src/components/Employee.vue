@@ -3,11 +3,12 @@ import {reactive,ref} from "vue";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
 import {ElMessageBox} from "element-plus";
-import {Delete, Edit} from "@element-plus/icons-vue";
+import {Delete, Edit, Plus} from "@element-plus/icons-vue";
 
 
 const data = reactive({
   name:null,
+  username:null,
   table:[
 
   ],
@@ -35,7 +36,7 @@ const loadData = () =>{
         params:{
           pageNum: data.pageNum,
           pageSize: data.pageSize,
-          name: data.name
+          username: data.username
         }
       }).then(res =>{
         data.table = res.data.list
@@ -47,7 +48,7 @@ const loadData = () =>{
 }
 
 const resetData = () =>{
-  data.name = null
+  data.username = null
   loadData()
 }
 
@@ -61,6 +62,7 @@ const handleUpdate =(row) =>{
   data.formVisible = true
 }
 
+//
 const save =()=>{
   formRef.value.validate((valid) => {
     if(valid){
@@ -130,7 +132,7 @@ const handleSelectionChange = (rows)=>{
 }
 
 const handleAvatarSuccess = (res)=>{
-  console.log(res)
+  console.log(res.data)
   data.form.avatar = res.data
 }
 
@@ -141,7 +143,7 @@ loadData()
 <template>
   <div>
     <div class = "card" style="margin-bottom: 5px">
-      <el-input style="width: 240px; margin-right:20px" v-model="data.name" placeholder="请输入名称查询" prefix-icon="Search"></el-input>
+      <el-input style="width: 240px; margin-right:20px" v-model="data.username" placeholder="请输入账号名称查询" prefix-icon="Search"></el-input>
       <el-button type="primary" @click="loadData">查询</el-button>
       <el-button type="warning" @click="resetData">重置</el-button>
     </div>
@@ -156,7 +158,7 @@ loadData()
       <el-table :data="data.table" stripe border @selection-change="handleSelectionChange">
         <el-table-column type="selection"  width="55" />
         <el-table-column label="账号" prop="username" />
-        <el-table-column label="头像" >
+        <el-table-column label="头像" prop="avatar">
           <template #default="scope">
             <img :src="scope.row.avatar" alt=""  style="display: block ;width: 40px; height: 40px; border-radius: 50%;">
           </template>
@@ -196,12 +198,15 @@ loadData()
         <el-input :disabled="data.form.id" v-model="data.form.username" autocomplete="off" placeholder="请输入账号"/>
       </el-form-item>
 
-      <el-form-item label="头像" prop="avatar">
-      <el-upload
-          action="http://localhost:9090/files/upload"
+      <el-form-item label="头像">
+        <el-upload
+          class="avatar-uploader"
+          action="http://localhost:8080/files/upload"
+          :show-file-list="false"
           :on-success="handleAvatarSuccess"
-          list-type="picture"
       >
+        <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar"  alt=""/>
+        <el-icon v-else class="avatar-uploader-icon"><Plus/></el-icon>
         <el-button type = "primary">上传头像</el-button>
       </el-upload>
       </el-form-item>
@@ -236,5 +241,32 @@ loadData()
 </template>
 
 <style scoped>
+.avatar-uploader .avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+</style>
 
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
 </style>

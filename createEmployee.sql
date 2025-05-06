@@ -1,3 +1,15 @@
+-- 创建管理员信息表
+CREATE TABLE `admin` (
+                         `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                         `username` varchar(255) DEFAULT NULL COMMENT '账号',
+                         `password` varchar(255) DEFAULT NULL COMMENT '密码',
+                         `name` varchar(255) DEFAULT NULL COMMENT '名称',
+                         `role` varchar(255) DEFAULT NULL COMMENT '角色',
+                         `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='管理员信息表';
+
+
 -- 创建 employee_auth 表
 CREATE TABLE employee_auth (
                                id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
@@ -23,3 +35,15 @@ CREATE TABLE employee_profile (
                                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                   FOREIGN KEY (auth_id) REFERENCES employee_auth(id) ON DELETE CASCADE
 ) ENGINE=InnoDB COMMENT='员工业务信息表';
+
+-- 创建文章信息表
+CREATE TABLE `article` (
+                           `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                           `title` varchar(255) DEFAULT NULL COMMENT '标题',
+                           `img` varchar(255) DEFAULT NULL COMMENT '封面',
+                           `content` longtext COMMENT '内容',
+                           `time` datetime DEFAULT NULL COMMENT '时间',
+                           `description` varchar(255) DEFAULT NULL,
+                           PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文章信息';
+

@@ -13,12 +13,12 @@
 
 
     <insert id="insert" parameterType="com.mocha.springboot.entity.Admin">
-        insert into admin (username,password,role,name,avatar)
-        value (#{username},#{password},#{role},#{name},#{avatar} )
+        insert into admin (username,password,role,name)
+        value (#{username},#{password},#{role},#{name} )
     </insert>
 
     <update id="updateById" parameterType="com.mocha.springboot.entity.Admin">
-        update admin set username = #{username},password = #{password},role = #{role},name = #{name},avatar= #{avatar}
+        update admin set username = #{username},password = #{password},role = #{role},name = #{name}
         where id = #{id}
     </update>
 

@@ -44,8 +44,8 @@ public class EmployeeService {
     }
 
     //增
-    public void add(EmployeeAuth employeeAuth) {
-        String username = employeeAuth.getUsername();
+    public void add(EmployeeAddInfoDTO dto) {
+        String username = dto.getUsername();
 
         //查询账号是否已存在
         EmployeeAuth dbEmployeeAuth = employeeAuthMapper.selectByUsername(username);
@@ -53,10 +53,17 @@ public class EmployeeService {
             throw new CustomException("账号已存在，请更换",500);
         }
 
+        EmployeeAuth employeeAuth = new EmployeeAuth();
+
         // 插入认证表
-        if (StrUtil.isBlank(employeeAuth.getPassword())){ //密码没填，设置默认密码
+        // 密码为空，设置默认密码,
+        if (StrUtil.isBlank(dto.getPassword())){ //密码没填，设置默认密码
             employeeAuth.setPassword(passwordEncoder.encode("123456"));
+        }else{
+            employeeAuth.setPassword(dto.getPassword());
         }
+
+        employeeAuth.setUsername(username);
         employeeAuth.setRole("EMP"); //员工角色
         employeeAuth.setActive(true);//账号有效性
         employeeAuth.setCreatedAt(LocalDateTime.now());//创建时间
@@ -67,8 +74,15 @@ public class EmployeeService {
         if (StrUtil.isBlank(employeeProfile.getName())){ //名字nickName为空，设置默认名字
             employeeProfile.setName(username);
         }
-        employeeProfile.setProfileCreatedAt(LocalDateTime.now());
+
         employeeProfile.setAuthId(employeeAuth.getId());
+        employeeProfile.setAge(dto.getAge());
+        employeeProfile.setAvatar(dto.getAvatar());
+        employeeProfile.setDescription(dto.getDescription());
+        employeeProfile.setDepartmentId(dto.getDepartmentId());
+        employeeProfile.setNo(dto.getNo());
+        employeeProfile.setSex(dto.getSex());
+
         employeeProfileMapper.insert(employeeProfile);
     }
 
@@ -86,6 +100,9 @@ public class EmployeeService {
 
     //改
     public void updateProfile(EmployeeProfileUpdateDTO dto) {
+        if(dto.getId() == null){
+            throw new CustomException("id不能为空",400);
+        }
         employeeProfileMapper.updateById(dto);
     }
 
@@ -165,11 +182,11 @@ public class EmployeeService {
 
         String hashedPassword = passwordEncoder.encode(rawPassword);
 
-        EmployeeAuth employeeAuth = new EmployeeAuth();
-        employeeAuth.setUsername(username);
-        employeeAuth.setPassword(hashedPassword);
+        EmployeeAddInfoDTO dto = new EmployeeAddInfoDTO();
+        dto.setUsername(username);
+        dto.setPassword(hashedPassword);
 
-        this.add(employeeAuth);
+        this.add(dto);
     }
 
     public void updatePassword(UpdatePasswordDTO dto) {

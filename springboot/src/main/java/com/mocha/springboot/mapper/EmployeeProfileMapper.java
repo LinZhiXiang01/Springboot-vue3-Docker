@@ -27,6 +27,6 @@ public interface EmployeeProfileMapper {
     @Select("select * from employee_profile where name = #{name}")
     EmployeeProfile selectByUsername(String username);
 
-    @Select("select id, auth_id, name, sex, no, age, description, department_id, avatar,created_at as profile_created_at from employee_profile where auth_id = #{authId}")
+    @Select("select id, auth_id, name, sex, no, age, description, department_id, avatar from employee_profile where auth_id = #{authId}")
     EmployeeProfile selectByAuthId(Integer authId);
 }

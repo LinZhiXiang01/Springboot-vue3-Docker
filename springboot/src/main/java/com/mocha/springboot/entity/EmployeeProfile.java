@@ -1,7 +1,5 @@
 package com.mocha.springboot.entity;
 
-import java.time.LocalDateTime;
-
 public class EmployeeProfile {
     private Integer id;
     private Integer authId;
@@ -10,9 +8,8 @@ public class EmployeeProfile {
     private String no;
     private Integer age;
     private String description;
-    private String departmentId;
+    private Integer departmentId;
     private String avatar;
-    private LocalDateTime profileCreatedAt;
 
     public Integer getAge() {
         return age;
@@ -70,11 +67,11 @@ public class EmployeeProfile {
         this.description = description;
     }
 
-    public String getDepartmentId() {
+    public Integer getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(String departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -86,11 +83,4 @@ public class EmployeeProfile {
         this.avatar = avatar;
     }
 
-    public LocalDateTime getProfileCreatedAt() {
-        return profileCreatedAt;
-    }
-
-    public void setProfileCreatedAt(LocalDateTime profileCreatedAt) {
-        this.profileCreatedAt = profileCreatedAt;
-    }
 }

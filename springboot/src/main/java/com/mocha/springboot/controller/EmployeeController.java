@@ -2,6 +2,7 @@ package com.mocha.springboot.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mocha.springboot.common.ResultCode;
+import com.mocha.springboot.dto.EmployeeAddInfoDTO;
 import com.mocha.springboot.dto.EmployeeProfileUpdateDTO;
 import com.mocha.springboot.dto.EmployeeQueryDTO;
 import com.mocha.springboot.entity.EmployeeAuth;
@@ -22,17 +23,19 @@ public class EmployeeController {
 
     /**
      * 新增数据
-     * @param employee
+     * @param dto
      * @return
      */
     @PostMapping("/add")
-    public ResultCode add(@RequestBody EmployeeAuth employee){
-        employeeService.add(employee);
+    public ResultCode add(@RequestBody EmployeeAddInfoDTO dto){
+        employeeService.add(dto);
         return ResultCode.success();
     }
 
     @PutMapping("/update")
     public ResultCode updateProfile(@RequestBody EmployeeProfileUpdateDTO dto){
+
+
         employeeService.updateProfile(dto);
         return ResultCode.success();
     }

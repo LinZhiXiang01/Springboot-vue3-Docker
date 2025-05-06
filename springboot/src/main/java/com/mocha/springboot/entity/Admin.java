@@ -6,7 +6,6 @@ public class Admin {
     private String password;
     private String role;
     private String name;
-    private String token;
 
     public Integer getId() {
         return id;
@@ -48,11 +47,4 @@ public class Admin {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

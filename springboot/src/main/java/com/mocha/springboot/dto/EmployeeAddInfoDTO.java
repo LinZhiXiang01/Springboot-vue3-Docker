@@ -1,9 +1,16 @@
 package com.mocha.springboot.dto;
 
-public class EmployeeProfileUpdateDTO {
-    private Integer id;
-    private String username;//冗余设计
+import java.time.LocalDateTime;
+
+public class EmployeeAddInfoDTO {
     private Integer authId;      // 外键：认证表 ID
+    private String username;//冗余设计
+    private String password;
+    private String role;
+    private Boolean isActive = true;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime lastLoginAt;
+
     private String name;
     private String avatar;
     private String sex;
@@ -12,12 +19,12 @@ public class EmployeeProfileUpdateDTO {
     private String description;
     private Integer departmentId;
 
-    public Integer getId() {
-        return id;
+    public Integer getAuthId() {
+        return authId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthId(Integer authId) {
+        this.authId = authId;
     }
 
     public String getUsername() {
@@ -28,12 +35,44 @@ public class EmployeeProfileUpdateDTO {
         this.username = username;
     }
 
-    public Integer getAuthId() {
-        return authId;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAuthId(Integer authId) {
-        this.authId = authId;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
+    }
+
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
     }
 
     public String getName() {

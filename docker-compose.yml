@@ -8,6 +8,10 @@ services:
       MYSQL_DATABASE: ${DB_NAME}     # 自动创建数据库
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./createEmployee.sql:/docker-entrypoint-initdb.d/init.sql
+      #挂载到 /docker-entrypoint-initdb.d/ 会自动执行这个 SQL 文件，仅在第一次初始化容器时。
+
+
     ports:
       - "3306:3306"
     networks:
@@ -34,7 +38,7 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test1?serverTimezone=UTC&autoReconnect=true&connectTimeout=10000&socketTimeout=10000
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     healthcheck: #健康测试
@@ -50,7 +54,8 @@ services:
     build: ./vue-project
     container_name: frontend #改名了
     ports:
-      - "8081:80"
+#      - "8081:80" #本地测试使用
+      - "80:80"
     depends_on:
       backend:
         condition: service_healthy #只有当 springboot 健康才启动前端
@@ -62,6 +67,7 @@ networks:
 
 volumes:
   mysql-data:  # 定义mysql-data卷
-    external: true  # 使用外部卷，而不是 Compose 自动创建的卷
+#    external: true  # 使用外部卷，而不是 Compose 自动创建的卷
+    external: false
   redis-data:
     external: false

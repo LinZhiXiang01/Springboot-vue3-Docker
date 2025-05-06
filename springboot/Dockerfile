@@ -12,6 +12,9 @@ COPY ../maven/settings.xml /root/.m2/settings.xml
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
+COPY src ./src
+RUN mvn clean package -DskipTests
+
 RUN ls -l /build/target
 FROM openjdk:17-slim
 

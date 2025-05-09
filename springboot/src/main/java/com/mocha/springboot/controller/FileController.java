@@ -38,7 +38,7 @@ public class FileController {
             throw new CustomException("上传失败", 500);
         }
 
-        String url = "http://localhost:8080/files/download/" + fileName;
+        String url = "http://121.37.41.250:8080/files/download/" + fileName;
         return ResultCode.success(url);
     }
 
@@ -83,7 +83,7 @@ public class FileController {
             throw new CustomException("上传失败", 500);
         }
 
-        String url = "http://localhost:8080/files/download/" + fileName;
+        String url = "http://121.37.41.250:8080/files/download/" + fileName;
         // wangEditor上传图片成功后， 需要返回的参数
         Map<String, Object> resMap = new HashMap<>();
         List<Map<String, Object>> list = new ArrayList<>();

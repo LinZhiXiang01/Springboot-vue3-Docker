@@ -230,7 +230,7 @@ loadData()
       </el-form-item>
       <el-form-item label="封面" prop="img">
         <el-upload
-            action="http://localhost:8080/files/upload"
+            action="http://121.37.41.250:8080/files/upload"
             :on-success="handleAvatarSuccess"
             list-type="picture"
         >

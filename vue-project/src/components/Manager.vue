@@ -17,10 +17,10 @@ const logout = () =>{
 }
 
 const updateUser = () =>{
-  data.form = JSON.parse(localStorage.getItem("xm-pro-user"))
+  data.user = JSON.parse(localStorage.getItem("xm-pro-user"))
+
 }
 
-console.log(data.form)
 </script>
 
 <template>

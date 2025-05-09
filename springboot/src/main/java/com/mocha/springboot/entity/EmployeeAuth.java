@@ -3,7 +3,7 @@ package com.mocha.springboot.entity;
 import java.time.LocalDateTime;
 
 public class EmployeeAuth{
-    private Integer id;
+    private Integer authId;
     private String username;
     private String password;
     private String role;
@@ -11,12 +11,12 @@ public class EmployeeAuth{
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime lastLoginAt;
 
-    public Integer getId() {
-        return id;
+    public Integer getAuthId() {
+        return authId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthId(Integer authId) {
+        this.authId = authId;
     }
 
     public String getUsername() {

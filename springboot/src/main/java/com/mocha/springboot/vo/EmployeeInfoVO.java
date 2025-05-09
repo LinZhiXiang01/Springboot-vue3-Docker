@@ -3,7 +3,7 @@ package com.mocha.springboot.vo;
 import java.time.LocalDateTime;
 
 public class EmployeeInfoVO {
-    private Integer id; // auth_id
+    private Integer authId; // auth_id
     private Integer profileId;
     private String username;
     private String role;
@@ -34,12 +34,12 @@ public class EmployeeInfoVO {
         this.createdAt = createdAt;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAuthId() {
+        return authId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthId(Integer authId) {
+        this.authId = authId;
     }
 
     public String getUsername() {

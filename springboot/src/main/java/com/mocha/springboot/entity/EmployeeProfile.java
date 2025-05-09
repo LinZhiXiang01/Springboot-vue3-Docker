@@ -1,7 +1,7 @@
 package com.mocha.springboot.entity;
 
 public class EmployeeProfile {
-    private Integer id;
+    private Integer profileId;
     private Integer authId;
     private String name;
     private String sex;
@@ -19,12 +19,12 @@ public class EmployeeProfile {
         this.age = age;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getProfileId() {
+        return profileId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProfileId(Integer profileId) {
+        this.profileId = profileId;
     }
 
     public Integer getAuthId() {

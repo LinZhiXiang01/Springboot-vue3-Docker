@@ -8,7 +8,7 @@
         <where>
             <if test="name !=null"> and name like concat('%',#{name},'%')</if>
         </where>
-        order by id desc
+        order by profile_id desc
     </select>
 
 
@@ -17,12 +17,11 @@
         values (#{authId}, #{name}, #{avatar}, #{sex}, #{no}, #{age}, #{description}, #{departmentId})
     </insert>
 
-    <update id="updateById" parameterType="com.mocha.springboot.dto.EmployeeProfileUpdateDTO">
+    <update id="updateByAuthId" parameterType="com.mocha.springboot.dto.EmployeeProfileUpdateDTO">
         update employee_profile set name = #{name},sex = #{sex},no = #{no},age = #{age},
                                     description = #{description}, department_id = #{departmentId},
                                     avatar = #{avatar}
         where auth_id = #{authId}
-#         where id = #{id}
 
     </update>
 

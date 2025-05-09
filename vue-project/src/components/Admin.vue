@@ -64,7 +64,7 @@ const handleUpdate =(row) =>{
 const save =()=>{
   formRef.value.validate((valid) => {
     if(valid){
-      data.form.id ? update() : add()
+      data.form.authId ? update() : add()
     }
   })
 }
@@ -93,9 +93,9 @@ const update=()=>{ // 编辑的对象里面包含id
   })
 }
 
-const del=(id)=>{
+const del=(authId)=>{
   ElMessageBox.confirm("确认删除该管理员吗？",'删除确认', {type:"warning"}).then(()=>{
-    request.delete("/admin/deleteById/"+id).then(res =>{
+    request.delete("/admin/deleteById/"+authId).then(res =>{
       if(res.code === 200)  {
         ElMessage.success("删除成功")
         loadData()
@@ -125,7 +125,7 @@ const delBatch=()=>{
 
 const handleSelectionChange = (rows)=>{
 //从行数组里面，取出所有id，形成新的数组
-  data.ids = rows.map(row=>row.id)
+  data.ids = rows.map(row=>row.authId)
   console.log(data.ids)
 }
 
@@ -154,7 +154,7 @@ loadData()
         <el-table-column label="操作" prop="operations" >
           <template #default="scope">
             <el-button  type="primary" size="small" :icon="Edit" circle @click="handleUpdate(scope.row)"></el-button>
-            <el-button  type="danger" size="small" :icon="Delete" circle @click="del(scope.row.id)"></el-button>
+            <el-button  type="danger" size="small" :icon="Delete" circle @click="del(scope.row.authId)"></el-button>
           </template>
         </el-table-column>
       </el-table>

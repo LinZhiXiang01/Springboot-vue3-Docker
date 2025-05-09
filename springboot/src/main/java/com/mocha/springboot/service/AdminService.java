@@ -38,14 +38,14 @@ public class AdminService {
     }
 
     //删
-    public void deleteById(Integer id) {
-        adminMapper.deleteById(id);
+    public void deleteById(Integer authId) {
+        adminMapper.deleteById(authId);
     }
 
     //批量删除
     public void deleteBatch(List<Integer> ids) {
-        for(Integer id: ids) {
-            this.deleteById(id);
+        for(Integer authId: ids) {
+            this.deleteById(authId);
         }
     }
 
@@ -58,8 +58,8 @@ public class AdminService {
         return adminMapper.selectAll(admin);
     }
 
-    public Admin selectById(Integer id) {
-        return adminMapper.selectById(id);
+    public Admin selectById(Integer authId) {
+        return adminMapper.selectById(authId);
     }
 
     public PageInfo<Admin> selectPage(Admin admin,Integer pageNum, Integer pageSize){

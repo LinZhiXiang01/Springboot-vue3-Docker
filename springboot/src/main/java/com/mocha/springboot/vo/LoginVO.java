@@ -3,7 +3,7 @@ package com.mocha.springboot.vo;
 import com.mocha.springboot.entity.EmployeeProfile;
 
 public class LoginVO {
-    private Integer id; //实际为authId
+    private Integer authId; //实际为authId
     private String username;
     private String role;
     private String accessToken;
@@ -18,12 +18,12 @@ public class LoginVO {
         this.refreshToken = refreshToken;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAuthId() {
+        return authId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthId(Integer authId) {
+        this.authId = authId;
     }
 
     public String getUsername() {

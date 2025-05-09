@@ -28,10 +28,10 @@
             if (res.code === 200){
               localStorage.setItem("xm-pro-user",JSON.stringify(res.data))
               ElMessage.success("登录成功")
-              console.log(res)
+              // console.log(res)
               setTimeout(() => {
                 location.href = '/manager/home'
-              }, 500)
+              }, 1000)
 
             }else{
               ElMessage.error(res.msg)
@@ -60,7 +60,7 @@
             </el-form-item>
             <el-form-item prop="role">
               <el-select v-model="data.form.role" size = "large" placeholder="请选择角色">
-                <el-option label="管理员" value="ADMIN"></el-option>
+<!--                <el-option label="管理员" value="ADMIN"></el-option>-->
                 <el-option label="员工" value="EMP"></el-option>
               </el-select>
             </el-form-item>

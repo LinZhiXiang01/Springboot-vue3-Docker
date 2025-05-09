@@ -21,9 +21,9 @@ public class AdminController {
         return ResultCode.success();
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResultCode delete(@PathVariable Integer id){
-        adminService.deleteById(id);
+    @DeleteMapping("/deleteById/{authId}")
+    public ResultCode delete(@PathVariable Integer authId){
+        adminService.deleteById(authId);
         return ResultCode.success();
     }
 

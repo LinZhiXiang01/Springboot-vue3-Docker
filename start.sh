@@ -3,10 +3,6 @@
 #source .env
 
 echo "🔧 正在启动服务..."
-
-#github ~/etc/hosts 手动添加DNS
-#Docker /etc/docker/daemon.json
-
 docker-compose up -d --build
 
 echo "✅ 所有容器已启动！"

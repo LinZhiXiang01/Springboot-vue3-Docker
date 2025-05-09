@@ -9,16 +9,16 @@ import java.util.List;
 public interface AdminMapper {
     List<Admin> selectAll(Admin admin);
 
-    @Select("select * from admin where id = #{id}")
-    Admin selectById(Integer id);
+    @Select("select * from admin where auth_id = #{authId}")
+    Admin selectById(Integer authId);
 
 
     void insert(Admin admin);
 
     void updateById(Admin admin);
 
-    @Delete("delete from admin where id = #{id}")
-    void deleteById(Integer id);
+    @Delete("delete from admin where auth_id = #{authId}")
+    void deleteById(Integer authId);
 
     @Select("select * from admin where username = #{username}")
     Admin selectByUsername(String username);

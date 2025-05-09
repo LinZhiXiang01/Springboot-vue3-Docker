@@ -29,7 +29,7 @@ public class RedisTest {
 
         try {
             EmployeeProfile profile = new EmployeeProfile();
-            profile.setId(1);
+            profile.setProfileId(1);
             profile.setName("ZhangSan");
 
             String json = mapper.writeValueAsString(profile);

@@ -1,8 +1,7 @@
 package com.mocha.springboot.dto;
 
 public class EmployeeProfileUpdateDTO {
-    private Integer id;
-    private String username;//冗余设计
+    private Integer profileId;
     private Integer authId;      // 外键：认证表 ID
     private String name;
     private String avatar;
@@ -12,20 +11,14 @@ public class EmployeeProfileUpdateDTO {
     private String description;
     private Integer departmentId;
 
-    public Integer getId() {
-        return id;
+
+
+    public Integer getProfileId() {
+        return profileId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setProfileId(Integer profileId) {
+        this.profileId = profileId;
     }
 
     public Integer getAuthId() {

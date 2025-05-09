@@ -1,18 +1,18 @@
 -- 创建管理员信息表
 CREATE TABLE `admin` (
-                         `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                         `auth_id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
                          `username` varchar(255) DEFAULT NULL COMMENT '账号',
                          `password` varchar(255) DEFAULT NULL COMMENT '密码',
                          `name` varchar(255) DEFAULT NULL COMMENT '名称',
                          `role` varchar(255) DEFAULT NULL COMMENT '角色',
                          `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
-                         PRIMARY KEY (`id`)
+                         PRIMARY KEY (`auth_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='管理员信息表';
 
 
 -- 创建 employee_auth 表
 CREATE TABLE employee_auth (
-                               id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+                               profile_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
                                username VARCHAR(255) NOT NULL UNIQUE COMMENT '用户名',
                                password VARCHAR(100) NOT NULL COMMENT 'BCrypt加密后的密码',
                                role VARCHAR(50) NOT NULL COMMENT '用户角色',
@@ -23,7 +23,7 @@ CREATE TABLE employee_auth (
 
 -- 创建 employee_profile 表
 CREATE TABLE employee_profile (
-                                  id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+                                  profile_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
                                   auth_id INT NOT NULL COMMENT '对应的认证用户ID',
                                   name VARCHAR(255) COMMENT '名称',
                                   sex VARCHAR(10) COMMENT '性别',
@@ -33,7 +33,7 @@ CREATE TABLE employee_profile (
                                   department_id INT COMMENT '部门ID',
                                   avatar VARCHAR(255) COMMENT '头像URL',
                                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                  FOREIGN KEY (auth_id) REFERENCES employee_auth(id) ON DELETE CASCADE
+                                  FOREIGN KEY (auth_id) REFERENCES employee_auth(profile_id) ON DELETE CASCADE
 ) ENGINE=InnoDB COMMENT='员工业务信息表';
 
 -- 创建文章信息表

@@ -8,7 +8,7 @@
         <where>
             <if test="name !=null"> and name like concat('%',#{name},'%')</if>
         </where>
-        order by id desc
+        order by auth_id desc
     </select>
 
 
@@ -19,7 +19,7 @@
 
     <update id="updateById" parameterType="com.mocha.springboot.entity.Admin">
         update admin set username = #{username},password = #{password},role = #{role},name = #{name}
-        where id = #{id}
+        where auth_id = #{authId}
     </update>
 
 </mapper>

@@ -34,15 +34,13 @@ public class EmployeeController {
 
     @PutMapping("/update")
     public ResultCode updateProfile(@RequestBody EmployeeProfileUpdateDTO dto){
-
-
         employeeService.updateProfile(dto);
         return ResultCode.success();
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResultCode delete(@PathVariable Integer id){
-        employeeService.deleteById(id);
+    @DeleteMapping("/deleteById/{authId}")
+    public ResultCode delete(@PathVariable Integer authId){
+        employeeService.deleteById(authId);
         return ResultCode.success();
     }
 
@@ -60,9 +58,9 @@ public class EmployeeController {
         return ResultCode.success(list);
     }
 
-    @GetMapping("/selectProfileById/{id}")
-    public ResultCode selectById(@PathVariable Integer id){
-        EmployeeInfoVO employeeInfoVO = employeeService.selectProfileById(id);
+    @GetMapping("/selectProfileById/{authId}")
+    public ResultCode selectById(@PathVariable Integer authId){
+        EmployeeInfoVO employeeInfoVO = employeeService.selectProfileById(authId);
         return ResultCode.success(employeeInfoVO);
     }
 

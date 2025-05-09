@@ -59,6 +59,7 @@ services:
     depends_on:
       backend:
         condition: service_healthy #只有当 springboot 健康才启动前端
+
     networks:
       - app-net
 

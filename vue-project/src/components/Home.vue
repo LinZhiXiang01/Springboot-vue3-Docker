@@ -7,7 +7,7 @@ const test = () => {
   alert("test")
 }
 const data = reactive({
-  id:router.currentRoute.value.query.id,
+  authId:router.currentRoute.value.query.authId,
   name:router.currentRoute.value.query.name
 })
 

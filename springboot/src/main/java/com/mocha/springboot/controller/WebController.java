@@ -89,12 +89,19 @@ public class WebController {
 
     @PutMapping("/updatePassword")
     public ResultCode updatePassword(@RequestBody UpdatePasswordDTO dto){
+
+        //密码强度校验
+        String rawPassword = dto.getNewPassword();
+        if (!STRONG_PASSWORD_PATTERN.matcher(rawPassword).matches()) {
+            throw new CustomException("新密码强度不足：需包含大小写字母、数字和特殊字符，且不少于8位", 400);
+        }
+
         if("ADMIN".equals( dto.getRole())){
 //            adminService.updatePassword(dto);
         }else if("EMP".equals( dto.getRole())){
             employeeService.updatePassword(dto);
         }else{
-            throw new CustomException("非法用户输入",500);
+            throw new CustomException("非法用户输入",401);
         }
         return ResultCode.success();
     }

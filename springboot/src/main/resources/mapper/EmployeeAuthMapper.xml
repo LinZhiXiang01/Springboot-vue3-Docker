@@ -6,18 +6,18 @@
 
     <insert id="insert" parameterType="com.mocha.springboot.entity.EmployeeAuth" useGeneratedKeys="true" keyProperty="id">
         insert into employee_auth (username, password, role, is_active, created_at)
-        values (#{username}, #{password}, #{role}, #{active}, #{createdAt})
+        values (#{username}, #{password}, #{role}, #{isActive}, #{createdAt})
     </insert>
 
     <update id="updateById" parameterType="com.mocha.springboot.entity.EmployeeAuth">
         update employee_auth set username = #{username},password = #{password},role = #{role},
-                                 is_active = #{active}, created_at = #{createdAt}
-        where id = #{id}
+                                 is_active = #{isActive}, created_at = #{createdAt}
+        where auth_id = #{authId}
     </update>
 
     <update id="updatePassword" parameterType="com.mocha.springboot.entity.EmployeeAuth">
         update employee_auth set password = #{password}
-        where id = #{id}
+        where auth_id = #{authId}
     </update>
 
     <select id="selectAll" resultType="com.mocha.springboot.entity.EmployeeAuth">
@@ -25,29 +25,29 @@
         <where>
             <if test="name !=null"> and name like concat('%',#{name},'%')</if>
         </where>
-        order by id desc
+        order by auth_id desc
     </select>
 
 
     <select id="selectAllWithProfile" resultType="com.mocha.springboot.vo.EmployeeInfoVO">
-        SELECT e.id, e.username, e.role, e.is_active, e.created_at , e.last_login_at,
-         p.name, p.sex, p.no, p.age, p.description, p.department_id,p.auth_id, p.avatar
+        SELECT e.auth_id, e.username, e.role, e.is_active, e.created_at , e.last_login_at,
+         p.name, p.sex, p.no, p.age, p.description, p.department_id,p.profile_id, p.avatar
         FROM employee_auth e
-        LEFT JOIN employee_profile p ON e.id = p.auth_id
+        LEFT JOIN employee_profile p ON e.auth_id = p.auth_id
         <where>
             <if test="username != null and username != ''">
                 e.username like concat('%', #{username}, '%')
             </if>
         </where>
-        ORDER BY e.id DESC
+        ORDER BY e.auth_id DESC
 
     </select>
 
     <select id="selectProfileById" resultType="com.mocha.springboot.vo.EmployeeInfoVO">
         SELECT a.username,p.name, p.sex, p.no, p.age, p.description, p.department_id, p.avatar
         FROM employee_auth a
-        LEFT JOIN employee_profile p ON a.id = p.auth_id
-        WHERE auth_id = #{id}
+        LEFT JOIN employee_profile p ON a.auth_id = p.auth_id
+        WHERE a.auth_id = #{authId}
 
     </select>
 

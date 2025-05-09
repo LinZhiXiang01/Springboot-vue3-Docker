@@ -32,6 +32,10 @@ public class TokenInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("请求路径: {}", requestURI);
 
+        if ("/error".equals(requestURI)) {
+            return true; // 不拦截错误路径
+        }
+
         // 2. 从请求头中获取 Authorization
         String authorizationHeader = request.getHeader("Authorization");
 
@@ -42,9 +46,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         // 3. 获取 access token
         String oldAccessToken = authorizationHeader.substring(7);
-        if (oldAccessToken.isEmpty()) {
+        if (oldAccessToken == null || oldAccessToken.isEmpty()) {
             throw new CustomException("accessToken为空", 401);
         }
+
 
         // 4. 解析 access token
         if (!isTokenValid(oldAccessToken)) {

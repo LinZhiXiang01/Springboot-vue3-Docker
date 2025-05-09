@@ -3,7 +3,6 @@
 import {reactive,ref} from "vue";
 import request from "@/utils/request.js"
 import {ElMessage} from "element-plus";
-import {Plus} from "@element-plus/icons-vue";
 
 
 const formRef = ref()
@@ -50,7 +49,16 @@ const updatePersonalInfo = () => {
           if (res.code === 200) {
             ElMessage.success("更新成功")
             //更新缓存数据
-            localStorage.profile.setItem("profile", JSON.stringify(data.form))
+
+            // 2. 更新 profile 的内容
+            data.user.profile.name = data.form.name
+            data.user.profile.avatar = data.form.avatar
+            data.user.profile.sex = data.form.sex
+            data.user.profile.no = data.form.no
+            data.user.profile.age = data.form.age
+            data.user.profile.description = data.form.description
+
+            localStorage.setItem("xm-pro-user", JSON.stringify(data.user))
             // 触发父级从缓存里取的最新个人信息
             emit('updatePersonalInfo')
           } else {
@@ -65,7 +73,7 @@ const updatePersonalInfo = () => {
 const emit = defineEmits(['updatePersonalInfo'])
 
 const handleAvatarSuccess = (res)=>{
-  // console.log(res)
+  console.log(res)
   data.form.avatar = res.data
 }
 
@@ -94,7 +102,7 @@ if(data.user.role ==="EMP"){
           :on-success="handleAvatarSuccess"
       >
         <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar"  alt=""/>
-        <el-icon v-else class="avatar-uploader-icon"><Plus/></el-icon>
+        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
       </el-upload>
     </el-form-item>
     <el-form-item label="账号" prop="username">

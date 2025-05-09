@@ -37,7 +37,7 @@
           request.post("/register",data.form).then((res) => {
             if (res.code === 200){
               localStorage.setItem("xm-pro-user",JSON.stringify(res.data))
-              ElMessage.success("注册成功")
+              ElMessage.success("員工注册成功")
               console.log(res)
               setTimeout(() => {
                 location.href = '/login'

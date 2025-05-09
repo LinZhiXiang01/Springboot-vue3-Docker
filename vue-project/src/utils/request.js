@@ -20,6 +20,7 @@ const request = axios.create({
 request.interceptors.request.use(async config => {
 
     const user = getStoredUser();
+
     if (user && user.accessToken) {
 
         let token = user.accessToken;
@@ -52,13 +53,15 @@ request.interceptors.response.use(
     error => {
         if (error.response.status === 404) {
             ElMessage.error('未找到请求接口')
+            location.href = '/login'
         } else if (error.response.status === 500) {
             ElMessage.error('系统异常，请查看后端控制台报错')
         }else if (error.response.status === 401) {
             ElMessage.error('登录异常，请重新登录')
-            // location.href = '/login'
+            location.href = '/login'
         } else {
             console.error(error.message)
+            location.href = '/login'
         }
         return Promise.reject(error)
     }

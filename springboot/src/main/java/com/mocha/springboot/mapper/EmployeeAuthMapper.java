@@ -18,8 +18,8 @@ public interface EmployeeAuthMapper {
 
     void updateById(EmployeeAuth employee);
 
-    @Delete("delete from employee_auth where id = #{id}")
-    void deleteById(Integer id);
+    @Delete("delete from employee_auth where auth_id = #{authId}")
+    void deleteById(Integer authId);
 
     @Select("select * from employee_auth where username = #{username}")
     EmployeeAuth selectByUsername(String username);
@@ -30,8 +30,8 @@ public interface EmployeeAuthMapper {
 
     List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO);
 
-    @Select("select * from employee_auth where id=#{id}")
-    EmployeeAuth selectById(Integer id);
+    @Select("select * from employee_auth where auth_id=#{authId}")
+    EmployeeAuth selectById(Integer authId);
 
-    EmployeeInfoVO selectProfileById(Integer id);
+    EmployeeInfoVO selectProfileById(Integer authId);
 }

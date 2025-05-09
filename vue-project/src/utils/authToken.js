@@ -7,7 +7,7 @@ const STORAGE_KEY = 'xm-pro-user';
  * 获取本地用户数据
  */
 export function getStoredUser() {
-    const userData = localStorage.getItem(STORAGE_KEY);
+    const userData = window.localStorage.getItem(STORAGE_KEY);
     if (!userData) return null;
     try {
         return JSON.parse(userData);
@@ -74,6 +74,7 @@ export function isTokenExpiringSoon(token) {
     const payload = parseJwt(token);
     if (!payload || !payload.exp) return true; // 无法解析则视为即将过期
     const exp = dayjs.unix(payload.exp);
+    //TODO,测试过期时间是否计算准确
     return dayjs().add(1, 'minute').isAfter(exp);
 }
 
@@ -88,7 +89,9 @@ export async function tryRefreshToken() {
 
         const res = await axios.post(
             '/api/refreshToken',
-            { userId: user.id || user.profile?.authId },
+            //FIXME:前端发了空数据
+            //DONE
+            { userId: user.authId || user.profile?.authId },
             {
                 headers: {
                     'Authorization': 'Bearer ' + user.refreshToken,
@@ -97,6 +100,7 @@ export async function tryRefreshToken() {
             }
         );
 
+        console.log(res.data.accessToken)
         const newAccessToken = res.data.data.accessToken;
         const newRefreshToken = res.data.data.refreshToken;
 
@@ -110,7 +114,6 @@ export async function tryRefreshToken() {
         }
     } catch (e) {
         console.error('Token refresh failed:', e);
-        clearStoredUser();
         return null;
     }
 }

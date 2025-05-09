@@ -75,7 +75,7 @@ public class EmployeeService {
             employeeProfile.setName(username);
         }
 
-        employeeProfile.setAuthId(employeeAuth.getId());
+        employeeProfile.setAuthId(employeeAuth.getAuthId());
         employeeProfile.setAge(dto.getAge());
         employeeProfile.setAvatar(dto.getAvatar());
         employeeProfile.setDescription(dto.getDescription());
@@ -87,35 +87,35 @@ public class EmployeeService {
     }
 
     //删
-    public void deleteById(Integer id) {
-        employeeAuthMapper.deleteById(id);
+    public void deleteById(Integer authId) {
+        employeeAuthMapper.deleteById(authId);
     }
 
     //批量删除
     public void deleteBatch(List<Integer> ids) {
-        for(Integer id: ids) {
-            this.deleteById(id);
+        for(Integer authId: ids) {
+            this.deleteById(authId);
         }
     }
 
     //改
     public void updateProfile(EmployeeProfileUpdateDTO dto) {
-        if(dto.getId() == null){
-            throw new CustomException("id不能为空",400);
+        if(dto.getAuthId() == null){
+            throw new CustomException("AuthId不能为空",400);
         }
-        employeeProfileMapper.updateById(dto);
+        employeeProfileMapper.updateByAuthId(dto);
     }
 
     public List<EmployeeInfoVO> selectAllWithProfile(EmployeeQueryDTO employeeQueryDTO) {
         return employeeAuthMapper.selectAllWithProfile(employeeQueryDTO);
     }
 
-    public EmployeeAuth selectById(Integer id) {
-        return employeeAuthMapper.selectById(id);
+    public EmployeeAuth selectById(Integer authId) {
+        return employeeAuthMapper.selectById(authId);
     }
 
-    public EmployeeInfoVO selectProfileById(Integer id) {
-        return employeeAuthMapper.selectProfileById(id);
+    public EmployeeInfoVO selectProfileById(Integer authId) {
+        return employeeAuthMapper.selectProfileById(authId);
     }
 
 
@@ -137,16 +137,16 @@ public class EmployeeService {
         EmployeeAuth dbEmployeeAuth = employeeAuthMapper.selectByUsername(username);
 
         if(dbEmployeeAuth == null){
-            throw new CustomException("用户名不存在",500);
+            throw new CustomException("用户名不存在",401);
         }
         if(!dbEmployeeAuth.getActive()){
-            throw new CustomException("账号已被禁用",500);
+            throw new CustomException("账号已被禁用",401);
         }
         if(!passwordEncoder.matches(password, dbEmployeeAuth.getPassword())){
-            throw new CustomException("用户名或密码错误",500);
+            throw new CustomException("用户名或密码错误",401);
         }
 
-        Integer authId = dbEmployeeAuth.getId();
+        Integer authId = dbEmployeeAuth.getAuthId();
         String authUsername = dbEmployeeAuth.getUsername();
         //生成JWT令牌
         String accessJWT = jwtUtils.generateAccessToken(authId,authUsername);
@@ -191,8 +191,8 @@ public class EmployeeService {
 
     public void updatePassword(UpdatePasswordDTO dto) {
 
-        Integer id = dto.getAuthId();
-        EmployeeAuth employeeAuth = this.selectById(id);
+        Integer authId = dto.getAuthId();
+        EmployeeAuth employeeAuth = this.selectById(authId);
         String hashedPassword = dto.getOldPassword();
 
         //校验原密码，错误报错

@@ -12,7 +12,7 @@ CREATE TABLE `admin` (
 
 -- 创建 employee_auth 表
 CREATE TABLE employee_auth (
-                               profile_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+                               auth_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
                                username VARCHAR(255) NOT NULL UNIQUE COMMENT '用户名',
                                password VARCHAR(100) NOT NULL COMMENT 'BCrypt加密后的密码',
                                role VARCHAR(50) NOT NULL COMMENT '用户角色',
@@ -33,7 +33,7 @@ CREATE TABLE employee_profile (
                                   department_id INT COMMENT '部门ID',
                                   avatar VARCHAR(255) COMMENT '头像URL',
                                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                  FOREIGN KEY (auth_id) REFERENCES employee_auth(profile_id) ON DELETE CASCADE
+                                  FOREIGN KEY (auth_id) REFERENCES employee_auth(auth_id) ON DELETE CASCADE
 ) ENGINE=InnoDB COMMENT='员工业务信息表';
 
 -- 创建文章信息表

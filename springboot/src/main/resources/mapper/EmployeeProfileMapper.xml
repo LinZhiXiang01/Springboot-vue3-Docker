@@ -12,7 +12,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="com.mocha.springboot.entity.EmployeeProfile" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.mocha.springboot.entity.EmployeeProfile" useGeneratedKeys="true" keyProperty="profileId">
         insert into employee_profile (auth_id, name, avatar, sex, no, age, description, department_id)
         values (#{authId}, #{name}, #{avatar}, #{sex}, #{no}, #{age}, #{description}, #{departmentId})
     </insert>

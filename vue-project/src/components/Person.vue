@@ -122,7 +122,7 @@ if(data.user.role ==="EMP"){
         <el-input v-model="data.form.no" autocomplete="off" placeholder="请输入工号"/>
       </el-form-item>
       <el-form-item label="年龄" label-width="70px">
-        <el-input-number v-model="data.form.age" style = "width:180px" min="18" autocomplete="off" placeholder="请输入年龄"/>
+        <el-input-number v-model="data.form.age" style = "width:180px" min="18" max="150" autocomplete="off" placeholder="请输入年龄"/>
       </el-form-item>
       <el-form-item label="个人介绍" label-width="70px">
         <el-input rows=3 type="textarea" v-model="data.form.description" style = "width:400px"  autocomplete="off" placeholder="请输入个人介绍"/>

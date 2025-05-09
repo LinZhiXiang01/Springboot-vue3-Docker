@@ -97,7 +97,7 @@ if(data.user.role ==="EMP"){
     <el-form-item label="头像">
       <el-upload
           class="avatar-uploader"
-          action="http://121.37.41.250:8080/files/upload"
+          action="/files/upload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
       >

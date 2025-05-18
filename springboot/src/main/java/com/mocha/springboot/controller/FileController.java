@@ -21,6 +21,8 @@ import java.util.Map;
 @RequestMapping("/files")
 public class FileController {
 
+    //TODO:没有在 Dockerfile 中显式指定 WORKDIR，默认工作目录可能是 / 或其他位置
+    //建议： application.yml 中添加配置，然后注入@Value使用：
     private static final String storePath = System.getProperty("user.dir")+"/files/";
     @PostMapping("/upload")
     public ResultCode upload(MultipartFile file) {

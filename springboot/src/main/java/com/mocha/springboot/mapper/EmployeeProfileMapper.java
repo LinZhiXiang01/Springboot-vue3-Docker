@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper
 public interface EmployeeProfileMapper {
 
+
     List<EmployeeProfile> selectAll(EmployeeProfile employee);
 
     @Select("select * from employee_profile where profile_id = #{profileId}")
